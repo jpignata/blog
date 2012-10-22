@@ -1,0 +1,40 @@
+%html
+  %head
+    %title tx.pignata.com :: #{article.title}
+    %link{href: "/stylesheets/article.css", type: "text/css", rel: "stylesheet"}
+    %script{type: "text/javascript", src: "//use.typekit.net/wqu7hjl.js"}
+    :javascript
+      try { Typekit.load(); } catch(e) {}
+
+  %body
+    #container
+      .left
+        %header
+          .left
+            .ribbon &nbsp;
+            %h2
+              %a{href: "/"} tx.pignata.com
+            .contact
+              %p
+                email&nbsp;&nbsp;
+                %a{href: "mailto:john@pignata.com"} john@pignata.com
+              %p
+                twitter
+                %a{href: "http://twitter.com/jpignata"} @jpignata
+          .clearfix
+
+        %nav
+          - articles.each do |article|
+            .article
+              %a{href: article.permalink}= article.title
+              %p= article.summary
+
+      .left
+        %article
+          %p.date= article.date.strftime("%A, %B %d, %Y")
+
+          %h1= article.title
+
+          = article.content
+
+      .clearfix

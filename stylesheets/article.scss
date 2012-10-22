@@ -1,0 +1,108 @@
+body {
+  font-family: museo-slab-1;
+  font-size: 20px;
+  margin-left: 20px;
+  margin-top: 0px;
+  padding: 0;
+  color: #333;
+
+  #container {
+    width: 1020px;
+    margin: 0 auto;
+
+    a {
+      color: #6682b5;
+      text-decoration: none;
+    }
+
+    p {
+      font-size: 24px;
+    }
+
+    header {
+      margin-bottom: 20px;
+
+      h2 {
+        width: 320px;
+        padding: 0;
+        margin: 0;
+        font-size: 48px;
+        font-family: raleway-1;
+
+        a {
+          text-decoration: none;
+          color: #333;
+        }
+      }
+
+      div.ribbon {
+        background-color: #aae;
+        height: 50px;
+        width: 320px;
+        padding: 0;
+      }
+
+      .contact {
+        margin-top: 25px;
+
+        p {
+          font-size: 18px;
+          margin: 0 0 5px 0;
+        }
+      }
+    }
+
+    nav {
+      float: left;
+      width: 320px;
+
+      .article {
+        margin-bottom: 10px;
+
+        a {
+          font-size: 20px;
+        }
+
+        p {
+          font-size: 14px;
+          margin: 0;
+          padding: 0;
+        }
+      }
+    }
+
+    article {
+      width: 600px;
+      margin-left: 50px;
+      float: left;
+      margin-top: 10px;
+
+      h1 {
+        margin: 0;
+        padding: 0;
+      }
+
+      h3 {
+        text-decoration: underline;
+      }
+
+      .date {
+        margin: 0 0 15px 0;
+        font-size: 18px;
+        font-style: italic;
+      }
+
+      .gist {
+        font-size: 14px;
+      }
+    }
+
+    .left {
+      float: left;
+    }
+
+    .clearfix {
+      clear: both;
+    }
+  }
+}

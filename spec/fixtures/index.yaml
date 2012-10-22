@@ -1,0 +1,8 @@
+- title: First blog post
+  date: 2012-10-22
+  summary: Some kind of introductory blog post
+  file_name: first_post.md
+- title: Second blog post
+  date: 2012-10-25
+  summary: Some kind of sophmore blog post
+  file_name: second_post.md

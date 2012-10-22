@@ -1,0 +1,67 @@
+body {
+  font-family: museo-slab-1;
+  font-size: 20px;
+  margin-left: 20px;
+  margin-top: 0px;
+  padding: 0;
+  color: #333; }
+  body #container {
+    width: 1020px;
+    margin: 0 auto; }
+    body #container a {
+      color: #6682b5;
+      text-decoration: none; }
+    body #container p {
+      font-size: 24px; }
+    body #container header {
+      margin-bottom: 20px; }
+      body #container header h2 {
+        width: 320px;
+        padding: 0;
+        margin: 0;
+        font-size: 48px;
+        font-family: raleway-1; }
+        body #container header h2 a {
+          text-decoration: none;
+          color: #333; }
+      body #container header div.ribbon {
+        background-color: #aae;
+        height: 50px;
+        width: 320px;
+        padding: 0; }
+      body #container header .contact {
+        margin-top: 25px; }
+        body #container header .contact p {
+          font-size: 18px;
+          margin: 0 0 5px 0; }
+    body #container nav {
+      float: left;
+      width: 320px; }
+      body #container nav .article {
+        margin-bottom: 10px; }
+        body #container nav .article a {
+          font-size: 20px; }
+        body #container nav .article p {
+          font-size: 14px;
+          margin: 0;
+          padding: 0; }
+    body #container article {
+      width: 600px;
+      margin-left: 50px;
+      float: left;
+      margin-top: 10px; }
+      body #container article h1 {
+        margin: 0;
+        padding: 0; }
+      body #container article h3 {
+        text-decoration: underline; }
+      body #container article .date {
+        margin: 0 0 15px 0;
+        font-size: 18px;
+        font-style: italic; }
+      body #container article .gist {
+        font-size: 14px; }
+    body #container .left {
+      float: left; }
+    body #container .clearfix {
+      clear: both; }

@@ -1,0 +1,4 @@
+- title: Real-Time Web Streams Using Server-Sent Events
+  date: 2012-10-22
+  summary: Server-Sent Events is a browser API that provides a simplex connection from server to client to transmit real-time updates to a web page.
+  file_name: server-sent-events.md
