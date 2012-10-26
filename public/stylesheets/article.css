@@ -1,6 +1,5 @@
 body {
   font-family: museo-slab-1;
-  font-size: 20px;
   margin-left: 20px;
   margin-top: 0px;
   padding: 0;
@@ -12,14 +11,15 @@ body {
       color: #6682b5;
       text-decoration: none; }
     body #container p {
-      font-size: 24px; }
+      font-size: 22px; }
     body #container header {
       margin-bottom: 20px; }
       body #container header h2 {
+        text-align: center;
         width: 320px;
         padding: 0;
         margin: 0;
-        font-size: 48px;
+        font-size: 45px;
         font-family: raleway-1; }
         body #container header h2 a {
           text-decoration: none;
@@ -51,10 +51,12 @@ body {
       float: left;
       margin-top: 10px; }
       body #container article h1 {
+        font-size: 28px;
         margin: 0;
         padding: 0; }
       body #container article h3 {
-        text-decoration: underline; }
+        font-size: 24px;
+        font-weight: bolder; }
       body #container article .date {
         margin: 0 0 15px 0;
         font-size: 18px;

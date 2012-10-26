@@ -1,6 +1,5 @@
 body {
   font-family: museo-slab-1;
-  font-size: 20px;
   margin-left: 20px;
   margin-top: 0px;
   padding: 0;
@@ -16,17 +15,18 @@ body {
     }
 
     p {
-      font-size: 24px;
+      font-size: 22px;
     }
 
     header {
       margin-bottom: 20px;
 
       h2 {
+        text-align: center;
         width: 320px;
         padding: 0;
         margin: 0;
-        font-size: 48px;
+        font-size: 45px;
         font-family: raleway-1;
 
         a {
@@ -78,12 +78,14 @@ body {
       margin-top: 10px;
 
       h1 {
+        font-size: 28px;
         margin: 0;
         padding: 0;
       }
 
       h3 {
-        text-decoration: underline;
+        font-size: 24px;
+        font-weight: bolder;
       }
 
       .date {

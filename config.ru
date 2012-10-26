@@ -2,4 +2,4 @@ $: << "./lib"
 
 require "application"
 
-run Blog
+run Application

@@ -14,15 +14,19 @@ class ContentFile
   attr_reader :file_path
 
   def read_and_parse_file
-    renderer.render(file_contents)
+    html = markdown_renderer.render(file_contents)
+    smartypants_renderer.render(html)
   end
 
-  def renderer
-    @renderer ||= Redcarpet::Markdown.new(
-      Redcarpet::Render::HTML,
+  def markdown_renderer
+    Redcarpet::Markdown.new(Redcarpet::Render::HTML,
       autolink: true,
       space_after_headers: true
     )
+  end
+
+  def smartypants_renderer
+    Redcarpet::Render::SmartyPants
   end
 
   def file_contents
