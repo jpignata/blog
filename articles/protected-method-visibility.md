@@ -50,7 +50,7 @@ Since we've marked `items` as `protected` we can reach in from one instance into
 
 This simple example is fairly similar to our last -- it involves overriding an operator method and using privileged data from the sibling instance in the operations. While state in neither `Collection` changed, they were able to collaborate and return a new `Collection` with the desired `items`.
 
-`IPAddr` is a class in the Ruby standard library which is a value object that represents an IPv4 or IPv6 address. Under the hood it makes extensive use of this pattern for manipulating the IP address it represents.
+`IPAddr` is a class in the Ruby standard library which is a value object that represents an IPv4 or IPv6 address. Under the hood it makes extensive use of this pattern for manipulating the IP address it represent.
 
 Given an IP address (say, `192.168.0.77`) and a subnet mask (`255.255.255.248`), we can use bitwise operations to figure out the upper and lower boundaries of the network of which this host is a member. The lower boundary is referred to as the network address and the upper boundary as the broadcast address.
 
@@ -86,7 +86,7 @@ Let's add a `PostsController`. We want to use [strong_parameters](http://github.
 
 The `protected` keyword denotes methods that are called by ActionController and the `private` keyword is used for methods that we call in the controller itself to complete our work. Simliar to the previous example above, there's no implementation reason that we're using protected methods here aside from calling attention to the fact that the methods marked as protected and private are interfaces aimed at different consumers: the external framework and the internal object respectively. It's a hint to future readers of the code that while these methods aren't part of the object's public API, there are users of the interface beyond the object itself.
 
-### Summary
+### So, when should I use it?
 
 `protected` is an odd beast; it accomplishes much of what `private` does but with the addition of some nuanced complexity and the (arguable) benefit of being able to call methods on `self` explicitly. There's some conventions around what protected means but they seem to vary from project to project. I could find no project with any guidelines around method visibility. It was not apparent in most of the code I read that had used `protected` why the original author had chosen to use it.
 
