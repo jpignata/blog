@@ -88,7 +88,7 @@ The `protected` keyword denotes methods that are called by ActionController and 
 
 ### So, when should I use it?
 
-`protected` is an odd beast; it accomplishes much of what `private` does but with the addition of some nuanced complexity and the (arguable) benefit of being able to call methods on `self` explicitly. There's some conventions around what protected means but they seem to vary from project to project. I could find no project with any guidelines around method visibility. It was not apparent in most of the code I read that had used `protected` why the original author had chosen to use it.
+`protected` is an odd beast; it accomplishes much of what `private` does but with the addition of some nuanced complexity and the (arguable) benefit of being able to call methods on `self` explicitly. There are some conventions around what protected means but they seem to vary from project to project. I could find no project with any guidelines around method visibility. It was not apparent in most of the code I read that had used `protected` why the original author had chosen to use it.
 
 I talked to several developers while writing this who had committed code to open source projects and had used `protected`. I received the same response from each: 1) I don't remember why I used `protected` there 2) I wouldn't use `protected` if I was writing that code again, (`private`|`public`) would have been better 3) I don't use `protected` at all today.
 
