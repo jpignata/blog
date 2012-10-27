@@ -64,7 +64,7 @@ Instead of changing its state during these operations, it creates a copy of itse
 
 ### Fulfilling an Abstract Class's Contract
 
-Another example of the `protected` keyword is in ActiveSupport's caching layer. `ActiveSuppot::Cache::Store` defines an abstract class that can be inherited to implement a pluggable caching layer. A minimal viable implementation of a cache store involves implementing three methods: `read_entry`, `write_entry` and `delete_entry`. These are called by the public API of the abstract class and implement a specific storage strategy. This separates the concerns of how the cache behaviors from the specifics of how its data is stored.
+Another example of the `protected` keyword is in ActiveSupport's caching layer. `ActiveSupport::Cache::Store` defines an abstract class that can be inherited to implement a pluggable caching layer. A minimal viable implementation of a cache store involves implementing three methods: `read_entry`, `write_entry` and `delete_entry`. These are called by the public API of the abstract class and implement a specific storage strategy. This separates the concerns of how the cache behaviors from the specifics of how its data is stored.
 
 <script src="https://gist.github.com/3959423.js?file=cache-1.rb"></script>
 
@@ -88,10 +88,10 @@ The `protected` keyword denotes methods that are called by ActionController and 
 
 ### So, when should I use it?
 
-`protected` is an odd beast; it accomplishes much of what `private` does but with the addition of some nuanced complexity and the (arguable) benefit of being able to call methods on `self` explicitly. There are some conventions around what protected means but they seem to vary from project to project. I could find no project with any guidelines around method visibility. It was not apparent in most of the code I read that had used `protected` why the original author had chosen to use it.
+`protected` is an odd beast; it accomplishes much of what `private` does but with the addition of some nuanced complexity and the (dubious) benefit of being able to call methods on `self` explicitly. There are some conventions around what protected means but they seem to vary from project to project. I could find no project with any guidelines around method visibility. It was not apparent in most of the code I read that had used `protected` why the original author had chosen to use it.
 
 I talked to several developers while writing this who had committed code to open source projects and had used `protected`. I received the same response from each: 1) I don't remember why I used `protected` there 2) I wouldn't use `protected` if I was writing that code again, (`private`|`public`) would have been better 3) I don't use `protected` at all today.
 
 In searching ruby-core for conversations about protected methods, it's clear this feature even confuses core contributors. The `OpenStruct` example above was [discussed on the list](http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/1558) as a replacement of an `instance_eval`. The contributor who suggested it was [tentative about using it](http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/1559): "From my ruby life for now, here's the only place where protected method lives."
 
-Protected method visibility could make sense to use in workaday code for the above cases. If you're going to use it, leave a paper trail in either the commit message or the RDoc documentation for the method explaining why.
+Protected method visibility could make sense to use in workaday code for the above cases. If you're going to use it, leave a paper trail in either the commit message or the RDoc documentation for the method briefly explaining why.
