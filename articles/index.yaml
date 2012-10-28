@@ -1,5 +1,8 @@
 - title: When Should I Use Protected Method Visibility In Ruby?
   date: 2012-10-26
-  summary: The semantics of protected method visibility hardly ever seem applicable. Why does this language feature exist and how is it used by open source projects?
   file_name: protected-method-visibility.md
   permalink: /2012/10/when-should-i-use-protected-method-visibility-in-ruby.html
+  summary: |
+    The semantics of protected method visibility hardly ever seem applicable.
+    Why does this language feature exist and how is it used by open source
+    projects?
