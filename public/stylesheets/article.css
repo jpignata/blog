@@ -52,15 +52,13 @@ body {
       float: left;
       margin-top: 10px; }
       body #container article h1 {
-        letter-spacing: 0px;
-        font-family: chunk-1;
-        font-size: 36px;
+        font-family: league-gothic-1;
+        font-size: 48px;
         margin: 0;
         padding: 0; }
       body #container article h3 {
-        letter-spacing: 0px;
-        font-family: chunk-1;
-        font-size: 26px; }
+        font-family: league-gothic-1;
+        font-size: 32px; }
       body #container article .date {
         margin: 0 0 15px 0;
         font-size: 18px;
