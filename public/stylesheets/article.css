@@ -1,4 +1,5 @@
 body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
   margin-left: 20px;
   margin-top: 0px;
   padding: 0;
@@ -10,7 +11,6 @@ body {
       color: #6682b5;
       text-decoration: none; }
     body #container p {
-      font-family: "Helvetica Neue", Arial, sans-serif;
       font-size: 22px;
       line-height: 1.5em; }
     body #container header {
@@ -30,22 +30,20 @@ body {
         height: 50px;
         width: 320px;
         padding: 0; }
-      body #container header .contact {
-        font-family: museo-slab-1; }
-        body #container header .contact p {
-          font-size: 24px;
-          margin: 0; }
+      body #container header .contact p {
+        font-size: 24px;
+        margin: 0; }
     body #container nav {
       float: left;
       width: 320px; }
       body #container nav .article {
         margin-bottom: 20px; }
         body #container nav .article a {
-          font-size: 20px; }
+          font-size: 18px; }
         body #container nav .article p {
           text-align: justify;
-          line-height: 1em;
-          font-size: 18px;
+          line-height: 1.35em;
+          font-size: 16px;
           margin: 5px 0 0 0;
           padding: 0; }
     body #container article {
