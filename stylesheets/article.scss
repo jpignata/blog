@@ -1,5 +1,4 @@
 body {
-  font-family: museo-slab-1;
   margin-left: 20px;
   margin-top: 0px;
   padding: 0;
@@ -46,7 +45,7 @@ body {
         margin-top: 25px;
 
         p {
-          font-size: 18px;
+          font-size: 22px;
           margin: 0 0 5px 0;
         }
       }
@@ -78,12 +77,14 @@ body {
       margin-top: 10px;
 
       h1 {
+        font-family: museo-slab-1;
         font-size: 28px;
         margin: 0;
         padding: 0;
       }
 
       h3 {
+        font-family: museo-slab-1;
         font-size: 24px;
         font-weight: bolder;
       }

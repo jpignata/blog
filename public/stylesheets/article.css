@@ -1,5 +1,4 @@
 body {
-  font-family: museo-slab-1;
   margin-left: 20px;
   margin-top: 0px;
   padding: 0;
@@ -32,7 +31,7 @@ body {
       body #container header .contact {
         margin-top: 25px; }
         body #container header .contact p {
-          font-size: 18px;
+          font-size: 22px;
           margin: 0 0 5px 0; }
     body #container nav {
       float: left;
@@ -51,10 +50,12 @@ body {
       float: left;
       margin-top: 10px; }
       body #container article h1 {
+        font-family: museo-slab-1;
         font-size: 28px;
         margin: 0;
         padding: 0; }
       body #container article h3 {
+        font-family: museo-slab-1;
         font-size: 24px;
         font-weight: bolder; }
       body #container article .date {
