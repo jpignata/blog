@@ -18,8 +18,8 @@ body {
         text-align: center;
         width: 320px;
         padding: 0;
-        margin: 0;
-        font-size: 45px;
+        margin: 0 0 20px 0;
+        font-size: 48px;
         font-family: raleway-1; }
         body #container header h2 a {
           text-decoration: none;
@@ -29,21 +29,21 @@ body {
         height: 50px;
         width: 320px;
         padding: 0; }
-      body #container header .contact {
-        margin-top: 25px; }
-        body #container header .contact p {
-          font-size: 18px;
-          margin: 0 0 5px 0; }
+      body #container header .contact p {
+        font-size: 24px;
+        margin: 0; }
     body #container nav {
       float: left;
       width: 320px; }
       body #container nav .article {
-        margin-bottom: 10px; }
+        margin-bottom: 20px; }
         body #container nav .article a {
           font-size: 20px; }
         body #container nav .article p {
-          font-size: 14px;
-          margin: 0;
+          text-align: justify;
+          line-height: 1em;
+          font-size: 18px;
+          margin: 5px 0 0 0;
           padding: 0; }
     body #container article {
       width: 600px;
