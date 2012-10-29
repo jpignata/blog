@@ -31,7 +31,7 @@ body {
         width: 320px;
         padding: 0; }
       body #container header .contact p {
-        font-size: 24px;
+        font-size: 20px;
         margin: 0; }
     body #container nav {
       float: left;
@@ -52,14 +52,15 @@ body {
       float: left;
       margin-top: 10px; }
       body #container article h1 {
-        font-family: museo-slab-1;
-        font-size: 28px;
+        letter-spacing: 0px;
+        font-family: chunk-1;
+        font-size: 36px;
         margin: 0;
         padding: 0; }
       body #container article h3 {
-        font-family: museo-slab-1;
-        font-size: 24px;
-        font-weight: bolder; }
+        letter-spacing: 0px;
+        font-family: chunk-1;
+        font-size: 26px; }
       body #container article .date {
         margin: 0 0 15px 0;
         font-size: 18px;
