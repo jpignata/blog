@@ -14,8 +14,9 @@ body {
     }
 
     p {
-      font-size: 24px;
-      line-height: 1.3em;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-size: 22px;
+      line-height: 1.5em;
     }
 
     header {
@@ -43,6 +44,8 @@ body {
       }
 
       .contact {
+        font-family: museo-slab-1;
+
         p {
           font-size: 24px;
           margin: 0;
