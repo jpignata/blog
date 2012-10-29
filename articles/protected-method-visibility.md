@@ -5,8 +5,8 @@ use-case in Ruby: methods defined as protected are only callable by other
 objects whose class is of the same defining class or its subclasses. The
 [pickaxe book](http://pragprog.com/book/ruby3/programming-ruby-1-9) calls this
 "keeping it within the family." [_The Ruby Programming
-Language_](http://www.amazon.com/Ruby-Programming-Language-David-
-Flanagan/dp/0596516177) describes protected as "the least commonly defined and
+Language_](http://www.amazon.com/Ruby-Programming-Language-David-Flanagan/dp/0596516177)
+describes protected as "the least commonly defined and
 also the most difficult to understand" of the method visibility types, so when
 I do see it I wonder what the author is trying to communicate. Is it a hint
 about the stability of the methods? Are the objects actually using protected
@@ -204,11 +204,10 @@ been better 3) I don't use `protected` at all today.
 
 In searching ruby-core for conversations about protected methods, it's clear
 this feature even confuses core contributors. The `OpenStruct` example above
-was [discussed on the list](http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby
-/ruby-core/1558) as a replacement of an `instance_eval`. The contributor who
-suggested it was [tentative about using it](http://blade.nagaokaut.ac.jp/cgi-
-bin/scat.rb/ruby/ruby-core/1559): "From my ruby life for now, here's the only
-place where protected method lives."
+was [discussed on the list](http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/1558)
+as a replacement of an `instance_eval`. The contributor who suggested it was
+[tentative about using it](http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-core/1559):
+"From my ruby life for now, here's the only place where protected method lives."
 
 Protected method visibility could make sense to use in workaday code for the
 above cases. If you're going to use it, leave a paper trail in either the
