@@ -1,4 +1,4 @@
-- title: Building The Real-Time Web with Server-Sent Events
+- title: Building the Real-Time Web with Server-Sent Events
   date: 2012-10-29
   file_name: server-sent-events.md
   summary: |
@@ -6,7 +6,7 @@
     often we're still just polling. Let's look at implementing a real-time channel
     between clients and servers using Server-Sent Events.
 
-- title: When Should I Use Protected Method Visibility In Ruby?
+- title: When Should I Use Protected Method Visibility in Ruby?
   date: 2012-10-26
   file_name: protected-method-visibility.md
   permalink: /2012/10/when-should-i-use-protected-method-visibility-in-ruby.html
