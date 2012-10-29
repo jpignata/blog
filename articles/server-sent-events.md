@@ -1,12 +1,12 @@
-In the long, long ago, to add real-time content to a web page your trusty
-hammer was a kludge of a JavaScript timer to poll an HTTP endpoint via XHR and
+In the long, long ago, to add real-time content to a web page your only option
+was a kludge of a JavaScript timer to poll an HTTP endpoint via XHR and
 manipulate the page when new data became available. Still common (and even
 [preferred by some](https://twitter.com/dhh/status/251005914344222720)), Ajax
-polling seems fairly inefficient. Every few seconds we have to spin up a
-TCP connection, send a full HTTP request, wait for the server to do some kind
-of work, and snarf back and parse an entire HTTP response.
+polling seems inefficient at best and retrograde at worst. Every few seconds
+we have to spin up a TCP connection, send a full HTTP request, wait for the
+server to do some kind of work, and snarf back and parse an entire HTTP response.
 
-All of this redundant connections and chatter aren't free. As more traffic
+All of these redundant connections and chatter aren't free. As more traffic
 moves to mobile clients these inefficiencies have real-world impact on users'
 device battery life and data transfer costs. Keepalive and `If-Modified-Since`
 or `ETag` request headers might help but your server is still tied up on each
@@ -28,11 +28,11 @@ reason for this is that WebSockets is much more fully featured than SSE.
 It's essentially a completely separate protocol from HTTP that provides a
 full-duplex connection which makes it more attractive for applications that
 require low-latency bi-directional communication. The trade-off is that since
-it's separate from HTTP there's some complexity in implementing it. For example,
+it's not HTTP there's added complexity in implementing it. For example,
 much of the HTTP infrastructure deployed out in the wild isn't necessarily
-aware of WebSockets and can't allow the protocol to traverse it. As it stands
-today getting a WebSockets-speaking server propped up behind a traditional load
-balancer can prove to be somewhat painful.
+aware of WebSockets and consequently the protocol's traffic can't traverse it.
+As it stands today getting a WebSockets-speaking server propped up behind a
+traditional load balancer can prove to be somewhat painful.
 
 SSE doesn't have any of this overhead as it uses traditional HTTP for transport.
 It's directed at real-world network environments so it has features like
@@ -40,13 +40,13 @@ automatic reconnection baked into it. It's exposed in the browser via the
 [`EventSource`](https://developer.mozilla.org/en-US/docs/Server-sent_events/EventSource)
 interface so it's trivial to write a shim for [browsers that don't support it](http://en.wikipedia.org/wiki/Server-sent_events#Web_browsers) to fall back to long-polling.
 
-A SSE stream only has a couple of attributes and looks something like YAML:
+A SSE event only has a couple of attributes and looks something like YAML:
 
 <script src="https://gist.github.com/3931911.js?file=gistfile1.yml"></script>
 
-`event` refers to the custom name of the event to trigger. JavaScript
-applications can bind to certain event types or choose to bind to all messages.
-`data` is what's passed into the event when trigger and `id` is an optional
+`event` is an optional custom name of the event to trigger. JavaScript
+applications can bind to specific events or choose to bind to all messages.
+`data` is what's passed into the event when triggered. `id` is an optional
 unique identifier for the message. If provided, `Last-Event-ID` will be sent
 back to the server on reconnect for applications where messages can't be
 dropped. SSE also allows a server to specify a `retry` in milliseconds and 
@@ -57,7 +57,7 @@ Binding to these events using JavaScript is straight-forward:
 <script src="https://gist.github.com/3931911.js?file=bind.js"></script>
 
 Any `new-message` events that are transmitted through the connection will now
-trigger this callback and log the message into the console.
+trigger this callback and log the message to the console.
 
 The [specification](http://www.w3.org/TR/eventsource/) envisions the protocol
 to be extensible to serve other purposes outside the browser. For example,
@@ -70,7 +70,7 @@ Let's build a small application to illustrate how Server-Sent Events works.
 In this example we'll put together a toy application that creates a shared picture
 frame. Any user can enter a search term which searches Flickr's API for that
 term, retrieves a random image from the results and broadcasts it via a
-Server-Sent Event. Each client listening to the channel then updates the
+Server-Sent Event. Each client subscribed will receive the event and update the
 background of the page.
 
 ![](/images/server-sent-events/sushi.png)
@@ -124,7 +124,7 @@ which will be used to transmit messages to subscribers.
 
 <script src="https://gist.github.com/3928474.js?file=subscribe.rb"></script>
 
-This is the entirity of the server-side code necessary to build a Server-Sent
+This is the entirety of the server-side code necessary to build a Server-Sent
 Events stream. We set the `Content-Type` of the response to `text/event-stream`
 and setup our channel subscription to trigger a `picture` event when a new
 message is received from the channel.
@@ -141,8 +141,8 @@ search and the URL to a random result.
 
 <script src="https://gist.github.com/3928474.js?file=publish.rb"></script>
 
-The only page of the application will be a small HTML page to setup the
-input tag to allow searches.
+The only page of the application will be a small, static HTML page to setup
+the a form to allow searches.
 
 <script src="https://gist.github.com/3928474.js?file=index.html"></script>
 
@@ -152,18 +152,19 @@ code.
 <script src="https://gist.github.com/3928474.js?file=application.coffee"></script>
 
 The call to `EventSource` is all that is required to open up the stream.  When
-we receive a picture event, we trigger a `changeBackground` event on our `<body>`
-and `<input>` elements. The `jQuery` block sets up the nodes to respond to
-`changeBackground` with its respective presentation logic. The input clears what
-has been typed into it and sets a placeholder with the last search and the
-body changes its background to the search's returned URL and does some CSS
-incantations to make the background appear full screen.
+we receive a picture event, we trigger a `changeBackground` event on our
+`<body>` and `<input>` elements. The `jQuery` block sets up the nodes to
+respond to `changeBackground` with their respective presentation logic. The
+input clears what has been typed into it and sets a placeholder with the last
+search and the body changes its background to the search's returned URL and
+does some CSS incantations to make the background appear full screen.
 
-We also bind to our form to wire it up to POST to our publish endpoint as an
-XHR request rather than a postback. Since we don't have full-duplex communication
-via SSE, we're cheating by using Ajax for upstream communications. This SSE Down/
-Ajax Up approach is completely acceptable for this application, but if it wasn't
-for some reason we might consider WebSockets instead.
+We also bind a `submit` callback to our form to wire it up to POST to our
+publish endpoint as an XHR request rather than a postback. Since we don't have
+full-duplex communication via SSE, we're cheating by using Ajax for upstream
+communications. This SSE Down/ Ajax Up approach is completely acceptable for
+this application, but if it wasn't for some reason we might consider
+WebSockets instead.
 
 The Rack application to make these pieces work together is quite small. We're
 going to inject a memoized `EventMachine::Channel` into each action to act as
@@ -172,9 +173,9 @@ actions and serve our static index page and compiled JavaScript.
 
 <script src="https://gist.github.com/3928474.js?file=picture_frame.rb"></script>
 
-Once all stitched together, anyone looking at the page when another user
-enters a search term will have their background changed to the search result.
-It looks something like this:
+Now that everything's stitched together, all users on the page will see its
+background changed when another user enters a search term. It looks something
+like this:
 
 ![](/images/server-sent-events/demo.gif)
 
@@ -187,12 +188,10 @@ GitHub.
 If you only need a simplex channel to a web client to update some data,
 Server-Sent Events is a viable alternative to crufty polling or complex
 WebSockets. Even with bi-directional requirements SSE Down/Ajax Up might be
-sufficient and save you the trouble from turning up a WebSockets connection.
+sufficient and save you the trouble of turning up a WebSockets connection.
 
-With the introduction of
-`ActionController::Live`, [Rails can support these
-endpoints](http://tenderlovemaking.com/2012/07/30/is-it-live.html).
-[Goliath](http://postrank-labs.github.com/goliath/) or
+[Rails 4.0 can be used](http://tenderlovemaking.com/2012/07/30/is-it-live.html) to
+build these endpoints. [Goliath](http://postrank-labs.github.com/goliath/) or
 [Cramp](http://cramp.in/) can also be used [to implement SSE](http://www.html5rocks.com/en/tutorials/casestudies/sunlight_streamcongress/) with a
 Ruby server. Implementation from scratch with Node.js, Twisted and Python,
 or your particular weapon of choice is likely just as straight-forward.
