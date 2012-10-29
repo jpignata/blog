@@ -37,7 +37,7 @@
           - articles.each do |article|
             .article
               %a{href: article.permalink}= article.title
-              %p= article.summary
+              %p #{article.date.strftime("%x")} &mdash; #{article.summary}
 
       .left
         %article
