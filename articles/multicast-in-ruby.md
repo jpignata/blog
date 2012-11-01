@@ -71,7 +71,7 @@ and e-reader formats.
 Articles about building a chat server in a given toolset is a trope of
 programming writing. Let's embrace the cliche and take that example but
 implement it in as a peer to peer service using multicast to allow chat
-clients on different hosts to exchange messages.
+clients on different hosts on the same network to exchange messages.
 
 We'll call the project backchannel. Its basic operations are:
 
@@ -113,7 +113,7 @@ Next we'll look at `Client`. It's the object that knows how to send and
 receive messages from the multicast address group. It exposes a method for
 sending messages and a hook for allowing another object to listen for new
 messages. Since it's the object responsible for chat operations, it will also
-generate and hold a random client ID and hold the user's chosen handle.
+generate and hold a random `client_id` and hold the user's chosen `handle`.
 
 <script src="https://gist.github.com/3990906.js?file=client.rb"></script>
 
@@ -126,7 +126,7 @@ other work while waiting for new messages.
 We've decoupled any interested receivers of messages from `Client` by
 adding a hook to allow interested parties to subscribe to messages through the
 `add_message_listener` method. Now our `Window` doesn't need to have any
-concrete wiring to Client but rather just has to register itself on
+concrete wiring to `Client` but rather just has to register itself on
 initialization and implement a `new_message` method.
 
 Window manages the UI and implements another dusty ruby wrapper -- `curses`.
@@ -136,17 +136,17 @@ will be the subject of a future article.
 <script src="https://gist.github.com/3990906.js?file=window.rb"></script>
 
 This class is fairly simple when most of the presentation layer cruft is
-set aside. On initialization a Client is passed in and a new array is
+set aside. On initialization a `Client` is passed in and a new array is
 initialized to store message history.
 
-Once `start` is called, Window adds itself as a message listener.
-`new_message` will be called by Client when a new message is available. That
+Once `start` is called, `Window` adds itself as a message listener.
+`new_message` will be called by `Client` when a new message is available. That
 method will add that message to the end of the array and call a `redraw`
 method to do the dirty UI details.
 
 User input is captured via a loop using `curses' getstr` method. We pass the
-content to Client for transmission over the network. Client passes us back a
-Message which we add to the collection and redraw the screen.
+content to `Client` for transmission over the network. `Client` passes us back a
+`Message` which we add to the collection and redraw the screen.
 
 Finally, we have some glue code to introduce `Client` and `Window` and start
 the program:
