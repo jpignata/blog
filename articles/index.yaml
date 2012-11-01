@@ -1,3 +1,12 @@
+- title: |
+    Multicast in Ruby: Building a Peer-to-Peer Chat System
+  date: 2012-11-01
+  file_name: multicast-in-ruby.md
+  summary: |
+    IP multicasting allows you to send a datagram to multiple nodes.  In this
+    post we'll look at multicasting and implement a simple chat system using the
+    ruby socket library.
+
 - title: Building Real-Time Web Applications with Server-Sent Events
   date: 2012-10-29
   file_name: server-sent-events.md
