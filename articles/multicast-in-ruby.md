@@ -60,9 +60,9 @@ terminal.
 
 The `socket` library is not the easiest to work with and usually involves a
 lot of man page reading. Previous editions of the
-[pickaxe](http://pragprog.com/book/ruby3/programming-ruby-1-9) has an whole
+[pickaxe](http://pragprog.com/book/ruby3/programming-ruby-1-9) have a whole
 appendix for the `socket` library but pragprog decided to remove it from the
-book in its current incarnation. Luckily, they have [released its
+book in the latest update. Luckily, they have [released its
 contents](http://pragprog.com/book/ruby3/programming-ruby-1-9) for free in PDF
 and e-reader formats.
 
