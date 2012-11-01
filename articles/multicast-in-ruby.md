@@ -153,10 +153,10 @@ the program:
 
 <script src="https://gist.github.com/3990906.js?file=backchannel.rb"></script>
 
-The result of these three small classes is an IRC-like program that allows
-any users connected over the same physical network to pass messages. Calling
-`Backchannel.start` will initiate draw the screen and wire up the client to
-the multicast address group.
+The result of these three small classes is an IRC-like program that allows any
+users connected over the same physical network to pass messages. Calling
+`Backchannel.start` will draw the screen and wire up the client to the
+multicast address group.
 
 ![](/images/multicast-in-ruby/pulp-fiction.png)
 
@@ -164,9 +164,7 @@ The [full source](http://github.com/jpignata/backchannel) of the final
 application is on GitHub and you can play with it by running `gem install
 backchannel` and starting backchannel with `backchannel <HANDLE>`. Since we're
 setting `SO_REUSEPORT`, multiple programs on the same system can connect to
-the same chat which is what I used to generate the Pulp Fiction demo. So if
-you start it in two different windows you should be able to communicate
-between them.
+the same chat for demonstration purposes.
 
 I've never used multicasting in a real-world application but will be keeping
 my eyes open for an opportunity. Since we're all carrying around computers in
