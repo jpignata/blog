@@ -36,13 +36,29 @@ responsible for management of a collection of items. The `Collection` doesn't
 expose the items directly but rather defines an interface for interacting with
 the internal array.
 
-<script src="https://gist.github.com/3956477.js?file=collection-1.rb"></script>
+```ruby
+class Collection
+  def initialize(items=[])
+    @items = items
+  end
+end
+```
 
 Two `Collection` instances are deemed to be equal if they hold the same number
 of elements and the elements are in the same order. To expose this operation
 we define a method `==` on `Collection`:
 
-<script src="https://gist.github.com/3956477.js?file=collection-2.rb"></script>
+```ruby
+class Collection
+  def initialize(items=[])
+    @items = items
+  end
+
+  def ==(other)
+    # TODO: Compare our items to the other collection's items
+  end
+end
+```
 
 In order to compare the arrays we'll need to add an `items` getter but
 continue to hide this data from external callers. If we add a getter without
@@ -51,20 +67,48 @@ directly but if we set this method private, nobody -- including sibling
 objects -- will be able to access the property. `protected` does exactly what
 we want.
 
-<script src="https://gist.github.com/3956477.js?file=collection-3.rb">>/script>
+```ruby
+class Collection
+  attr_reader :items
+  protected :items
+
+  def initialize(items=[])
+    @items = items
+  end
+
+  def ==(other)
+    items == other.items
+  end
+end
+```
 
 `Collection instances can now compare themselves to each other while still
 `hiding their data from other callers. Collection objects will only respond to
 `items for sibling Collection instances; calls from other objects will raise a
 `NoMethodError.
 
-<script src="https://gist.github.com/3956477.js?file=collection-4.rb"></script>
+```ruby
+Collection.new([1, 2, 3]) == Collection.new([1, 2, 3])
+# => true
+
+Collection.new([1, 2, 3]) == Collection.new([3, 2, 1])
+# => false
+
+>> Collection.new([1, 2, 3]).items
+# NoMethodError: protected method `items' called for #<Collection:0x007fdaf30450a8 @items=[1, 2, 3]>
+```
 
 The usual caveat here is that in Ruby access control is "just a suggestion"
 and a user of an object can still reach in and access anything regardless of
 its visibility. For example:
 
-<script src="https://gist.github.com/3956477.js?file=collection-5.rb"></script>
+```ruby
+Collection.new([1, 2, 3]).instance_variable_get(:@items)
+# => [1, 2, 3]
+
+Collection.new([1, 2, 3]).send(:items)
+# => [1, 2, 3]
+```
 
 While this is true, there's still value in signaling your intentions to users
 of the object. Setting explicit access controls guides users to our defined
@@ -74,7 +118,19 @@ The Ruby standard library class `OpenStruct` uses this pattern. `OpenStruct`
 allows a user to set arbitrary attributes that can be accessed with dot
 notation.
 
-<script src="https://gist.github.com/3956477.js?file=ostruct-1.rb"></script>
+```ruby
+require "ostruct"
+
+book = OpenStruct.new
+book.title  = "The Art of Fielding"
+book.author = "Chad Harbach"
+
+book.title
+# => "The Art of Fielding
+
+book.author
+# => "Chad Harbach"
+```
 
 An `OpenStruct` is considered equal to another `OpenStruct` when they hold the
 same attributes. Under the hood `OpenStruct` stores these attributes in an
@@ -82,7 +138,22 @@ internal hash table. It exposes this table as a protected method which allows
 other `OpenStruct` instances to determine equivalence. This is implemented
 similarly to the `Collection` example:
 
-<script src="https://gist.github.com/3956477.js?file=ostruct-2.rb"></script>
+```ruby
+# lib/ostruct.rb:224 (ruby 1.9.3-p286)
+
+attr_reader :table # :nodoc:
+protected :table
+
+#
+# Compares this object and +other+ for equality.  An OpenStruct is equal >
+# +other+ when +other+ is an OpenStruct and the two object's Hash tables >
+# equal.
+#
+def ==(other)
+  return false unless(other.kind_of?(OpenStruct))
+  return @table == other.table
+end
+```
 
 ### Mutator Methods for Immutable Objects
 
@@ -95,15 +166,51 @@ change during runtime. Let's start with the first: the sum of two `Collection`
 instances is a new `Collection` which holds a superset of the summands'
 arrays.
 
-<script src="https://gist.github.com/3956477.js?file=collection-6.rb"></script>
+```ruby
+class Collection
+  attr_reader :items
+  protected :items
+
+  def initialize(items=[])
+    @items = items
+  end
+
+  def ==(other)
+    items == other.items
+  end
+
+  def +(other)
+    # TODO: Add our items to the other collection's items
+    # and return a new collection with the sum.
+  end
+end
+```
 
 Since we've marked `items` as `protected` we can reach in from one instance
 into another, grab these items, add them to our items and instantiate a new
 collection.
 
-<script src="https://gist.github.com/3956477.js?file=collection-7.rb"></script>
+```ruby
+class Collection
+  attr_reader :items
+  protected :items
 
-<script src="https://gist.github.com/3956477.js?file=collection-8.rb"></script>
+  def initialize(items=[])
+    @items = items
+  end
+
+  def ==(other)
+    items == other.items
+  end
+
+  def +(other)
+    self.class.new(items + other.items)
+  end
+end
+
+Collection.new([1]) + Collection.new([4])
+# => #<Collection:0x007f809207e1c0 @items=[1, 4]>
+```
 
 This simple example is fairly similar to our last -- it involves overriding an
 operator method and using privileged data from the sibling instance in the
@@ -120,12 +227,81 @@ lower boundaries of the network of which this host is a member. The lower
 boundary is referred to as the network address and the upper boundary as the
 broadcast address.
 
-<script src="https://gist.github.com/3956780.js?file=ipaddr-1.rb"></script>
+```ruby
+# For more detail around IP addressing basics see TCP/IP
+# Illustrated (Second Edition) pp. 31-43
+
+address = IPAddr.new("192.168.0.77")
+# #<IPAddr: IPv4:192.168.0.77/255.255.255.255>
+
+# To calculate an IP address' network address, each bit
+# in the address is bitwise ANDed with each corresponding
+# bit in the subnet mask.
+address & IPAddr.new("255.255.255.248")
+# #<IPAddr: IPv4:192.168.0.72/255.255.255.255>
+
+# To calculate an IP address' broadcast address, take
+# the inverse of the subnet mask (flip ones to zeroes
+# and vice-versa), and perform a bitwise OR against each
+# bit in the address.
+address | (~ IPAddr.new("255.255.255.248"))
+# #<IPAddr: IPv4:192.168.0.79/255.255.255.255>
+
+# So our IP address 192.168.0.77 with subnet mask
+# 255.255.255.248 lies on a network whose network address
+# is 192.168.0.72 and whose broadcast address is 192.168.0.79.
+```
 
 `IPAddr exposes these operations but maintains immutability by cloning itself
 `and calling protected methods on the new instance.
 
-<script src="https://gist.github.com/3956780.js?file=ipaddr-2.rb"></script>
+```ruby
+# lib/ipaddr.rb:108 (ruby 1.9.3-p286)
+
+# Returns a new ipaddr built by bitwise AND.                                  
+def &(other)                                                                  
+ return self.clone.set(@addr & coerce_other(other).to_i)                     
+end                                                                           
+
+# Returns a new ipaddr built by bitwise OR.                                   
+def |(other)                                                                  
+  return self.clone.set(@addr | coerce_other(other).to_i)                     
+end
+
+# lib/ipaddr.rb:128 (ruby 1.9.3-p286)
+
+# Returns a new ipaddr built by bitwise negation.                             
+def ~                                                                         
+  return self.clone.set(addr_mask(~@addr))                                    
+end                                                                           
+
+# lib/ipaddr.rb:370 (ruby 1.9.3-p286)
+
+protected
+
+# Set +@addr+, the internal stored ip address, to given +addr+. The
+# parameter +addr+ is validated using the first +family+ member,
+# which is +Socket::AF_INET+ or +Socket::AF_INET6+.
+def set(addr, *family)
+  case family[0] ? family[0] : @family
+  when Socket::AF_INET
+    if addr < 0 || addr > IN4MASK
+      raise ArgumentError, "invalid address"
+    end
+  when Socket::AF_INET6
+    if addr < 0 || addr > IN6MASK
+      raise ArgumentError, "invalid address"
+    end
+  else
+    raise ArgumentError, "unsupported address family"
+  end
+  @addr = addr
+  if family[0]
+    @family = family[0]
+  end
+  return self
+end
+```
 
 Instead of changing its state during these operations, it creates a copy of
 itself using `clone` and calls protected methods like `set` to mutate the
@@ -142,13 +318,72 @@ API of the abstract class and implement a specific storage strategy. This
 separates the concerns of how the cache behaviors from the specifics of how
 its data is stored.
 
-<script src="https://gist.github.com/3959423.js?file=cache-1.rb"></script>
+```ruby
+# activesupport/lib/active_support/cache.rb:441
+
+protected
+
+# activesupport/lib/active_support/cache.rb:461
+
+# Read an entry from the cache implementation. Subclasses must implement
+# this method.
+def read_entry(key, options) # :nodoc:
+  raise NotImplementedError.new
+end
+
+# Write an entry to the cache implementation. Subclasses must implement
+# this method.
+def write_entry(key, entry, options) # :nodoc:
+  raise NotImplementedError.new
+end
+
+# Delete an entry from the cache implementation. Subclasses must
+# implement this method.
+def delete_entry(key, options) # :nodoc:
+  raise NotImplementedError.new
+end
+```
 
 ActiveSupport ships with implementations to store cache data in memory, a file
 and memcached. Each implementation has its own methods for interacting with
 its respective store.
 
-<script src="https://gist.github.com/3959423.js?file=cache-2.rb"></script>
+```ruby
+# activesupport/lib/active_support/cache/mem_cache_store.rb:121
+
+protected
+  # Read an entry from the cache.
+  def read_entry(key, options) # :nodoc:
+    deserialize_entry(@data.get(escape_key(key), options))
+  rescue Dalli::DalliError => e
+    logger.error("DalliError (#{e}): #{e.message}") if logger
+    nil
+  end
+
+# activesupport/lib/active_support/cache/mem_cache_store.rb:153
+
+private
+
+  # Memcache keys are binaries. So we need to force their encoding to binary
+  # before applying the regular expression to ensure we are escaping all
+  # characters properly.
+  def escape_key(key)
+    key = key.to_s.dup
+    key = key.force_encoding("BINARY")
+    key = key.gsub(ESCAPE_KEY_CHARS){ |match| "%#{match.getbyte(0).to_s(16).upcase}" }
+    key = "#{key[0, 213]}:md5:#{Digest::MD5.hexdigest(key)}" if key.size > 250
+    key
+  end
+
+  def deserialize_entry(raw_value)
+    if raw_value
+      entry = Marshal.load(raw_value) rescue raw_value
+      entry.is_a?(Entry) ? entry : Entry.new(entry)
+    else
+      nil
+    end
+  end
+```
 
 By marking the abstract interface methods with `protected` and the
 implementation methods for the storage mechanism as `private` there's a
@@ -167,14 +402,52 @@ framework is configured to call. For example, `ActionController::Base` allows
 an inheriting class to define filters that are called at specific moments in a
 request's lifecycle. We'll contrive an example using a Blog application.
 
-<script src="https://gist.github.com/3960397.js?file=routes.rb"></script>
+```ruby
+BlogApp::Application.routes.draw do
+  resources :blogs do
+    resources :posts
+  end
+end
+```
 
 Let's add a `PostsController`. We want to use
 [strong_parameters](http://github.com/rails/strong_parameters) to prevent any
 unauthorized mass-assignment and add an authorization check to ensure the
 current user's access to create posts on the current blog.
 
-<script src="https://gist.github.com/3960397.js?file=controller.rb"></script>
+```ruby
+class PostsController < ApplicationController
+  before_filter :authorize_user
+
+  def create
+    @post = blog.posts.build(post_parameters)
+
+    if @post.save
+      redirect_to action: :index, notice: "Post created."
+    else
+      render :new
+    end
+  end
+
+  protected
+
+  def authorize_user
+    unless blog.authorized?(current_user)
+      render nothing: true, status: :unauthorized
+    end
+  end
+
+  private
+
+  def blog
+    @blog ||= Blog.find(params[:blog_id])
+  end
+
+  def post_parameters
+    params.require(:post).permit(:title, :date, :content)
+  end
+end
+```
 
 The `protected` keyword denotes methods that are called by ActionController
 and the `private` keyword is used for methods that we call in the controller
@@ -210,6 +483,12 @@ as a replacement of an `instance_eval`. The contributor who suggested it was
 "From my ruby life for now, here's the only place where protected method lives."
 
 Protected method visibility could make sense to use in workaday code for the
-above cases. If you're going to use it, leave a paper trail in either the
-commit message or the RDoc documentation for the method briefly explaining
-why.
+above cases. It was designed for the object interaction patterns shown in the
+first two examples -- attributes for comparison operations and mutator methods
+for immutable objects. The latter two examples -- fulfilling an abstract class'
+contract and framework hooks -- are not universally applied patterns and aren't
+enforced by the language. If you're going to use `protected` in this way it's
+worth a quick discussion with your team to determine if the pattern would be
+useful or at the very least leaving a paper trail in either the commit message
+or the RDoc documentation for the methods briefly explaining why they are
+marked `protected`.
