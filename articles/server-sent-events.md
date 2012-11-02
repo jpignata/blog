@@ -42,7 +42,11 @@ interface so it's trivial to write a shim for [browsers that don't support it](h
 
 A SSE event only has a couple of attributes and looks something like YAML:
 
-<script src="https://gist.github.com/3931911.js?file=gistfile1.yml"></script>
+```yaml
+id: 1
+event: new-message
+data: oh, hi!
+```
 
 `event` is an optional custom name of the event to trigger. JavaScript
 applications can bind to specific events or choose to bind to all messages.
@@ -54,7 +58,13 @@ comments can be sent with a line starting with a colon.
 
 Binding to these events using JavaScript is straight-forward:
 
-<script src="https://gist.github.com/3931911.js?file=bind.js"></script>
+```javascript
+var stream = new EventSource("/stream");
+
+stream.addEventListener("new-message", function (event) {
+  console.log(event.data);
+});
+```
 
 Any `new-message` events that are transmitted through the connection will now
 trigger this callback and log the message to the console.
@@ -96,7 +106,19 @@ success and an `errback` which is fired on failure. We'll create a deferred
 body which can be used to write to the active connection and to signal to Thin
 when we want to close the connection.
 
-<script src="https://gist.github.com/3928474.js?file=body.rb"></script>
+```ruby
+class Body
+  include EM::Deferrable
+
+  def each(&block)
+    @callback = block
+  end
+
+  def write(data)
+    @callback.call(data)
+  end
+end
+```
 
 When Thin calls `each` it'll pass a block that can be used to emit data to
 the connection. We store that block and expose a `write` method for
@@ -107,12 +129,38 @@ as long as we're careful not to block the reactor. Here's an example
 rackup file that mounts a small Rack application that returns a ping each second
 four times and then closes the connection.
 
-<script src="https://gist.github.com/3928474.js?file=example.ru"></script>
+```ruby
+app = ->(env) {
+  count = 0
+  body = Body.new
+
+  timer = EM.add_periodic_timer(1) {
+    body.write "ping\n\n"
+    count += 1
+
+    if count == 5
+      timer.cancel
+
+      body.write "ok, bye!\n\n"
+      body.succeed
+    end
+  }
+
+  [200, {"Content-Type" => "text/plain"}, body]
+}
+
+run app
+```
 
 Now when we start the server it'll accept connections on the specified port
 and only close that connection after four pings.
 
-<script src="https://gist.github.com/3928474.js?file=start.txt"></script>
+```text
+jp@oeuf:~/workspace/tmp$ thin start -R example.ru -p 4000
+>> Thin web server (v1.5.0 codename Knife)
+>> Maximum connections set to 1024
+>> Listening on 0.0.0.0:4000, CTRL+C to stop
+```
 
 ![](/images/server-sent-events/curl.gif)
 
@@ -122,7 +170,32 @@ send events when they are triggered by another user. To start we'll build
 a class that expects to be instantiated with a Rack `env` and a channel object
 which will be used to transmit messages to subscribers.
 
-<script src="https://gist.github.com/3928474.js?file=subscribe.rb"></script>
+```ruby
+module Actions
+  class Subscribe
+    HEADERS = {
+      "Content-Type"  => "text/event-stream",
+      "Connection"    => "keepalive",
+      "Cache-Control" => "no-cache, no-store"
+    }
+
+    def initialize(env, channel)
+      @env = env
+      @body = Body.new
+      @channel = channel
+    end
+
+    def run
+      @channel.subscribe do |message|
+        body.write("event: picture\n")
+        body.write("data: #{data.to_json}\n\n")
+      end
+
+      [200, HEADERS, @body]
+    end
+  end
+end
+```
 
 This is the entirety of the server-side code necessary to build a Server-Sent
 Events stream. We set the `Content-Type` of the response to `text/event-stream`
@@ -139,17 +212,90 @@ the result asynchronously. The result is an object that responds to `to_json`
 and returns a hash that includes the original keyword that was used for the
 search and the URL to a random result.
 
-<script src="https://gist.github.com/3928474.js?file=publish.rb"></script>
+```ruby
+module Actions
+  class Publish
+    def initialize(env, channel)
+      @env = env
+      @channel = channel
+      @body = Body.new
+    end
+
+    def run
+      search = FlickrSearch.new(params["keyword"]).get
+
+      search.callback do |result|
+        @channel.push(result)
+
+        @body.write(result.to_json)
+        @body.succeed
+      end
+
+      search.errback { @body.fail }
+
+      [200, {"Content-Type" => "application/json"}, body]
+    end
+
+    private
+
+    def params
+      @params ||= Rack::Utils.parse_query(@env["rack.input"].read)
+    end
+  end
+end
+```
 
 The only page of the application will be a small, static HTML page to setup
 the a form to allow searches.
 
-<script src="https://gist.github.com/3928474.js?file=index.html"></script>
+```html
+<html>
+  <head>
+    <style type="text/css">
+      input {
+        position: absolute;
+        font-size: 48px;
+        bottom: 10px;
+      }
+    </style>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="/js/application.js"></script>
+  </head>
+  <body>
+    <form>
+      <input type="text"></input>
+    </form>
+  </body>
+</html>
+```
 
 To wire up the page to our stream we have a little bit of CoffeeScript glue
 code.
 
-<script src="https://gist.github.com/3928474.js?file=application.coffee"></script>
+```coffeescript
+source = new EventSource("/subscribe")
+
+source.addEventListener "picture", (event) ->
+  data = JSON.parse(event.data)
+  $("body, input").trigger "changeBackground", [data.url, data.keyword]
+
+jQuery ->
+  $("body").bind "changeBackground", (event, url, keyword) ->
+    $(this).css(
+      "background":              "url(#{url}) no-repeat center center fixed"
+      "-webkit-background-size": "cover"
+      "-moz-background-size":    "cover"
+      "background-size":         "cover"
+    )
+
+  $("input").bind "changeBackground", (event, url, keyword) ->
+    $(this).val("").attr("placeholder", keyword)
+
+  $("form").submit (event) ->
+    event.preventDefault()
+    input = $(this).find("input")
+    $.post "/publish", keyword: input.val()
+```
 
 The call to `EventSource` is all that is required to open up the stream.  When
 we receive a picture event, we trigger a `changeBackground` event on our
@@ -171,13 +317,47 @@ going to inject a memoized `EventMachine::Channel` into each action to act as
 the application's event bus and rely on `HTTP Router` to route requests to our
 actions and serve our static index page and compiled JavaScript.
 
-<script src="https://gist.github.com/3928474.js?file=picture_frame.rb"></script>
+```ruby
+class PictureFrame
+  def self.app
+    @routes ||= HttpRouter.new do
+      post("/publish").
+        to { |env| Actions::Publish.new(env, PictureFrame.channel).run }
+      get("/subscribe").
+        to { |env| Actions::Subscribe.new(env, PictureFrame.channel).run }
+      add("/").static("public/index.html")
+      add("/").static("public")
+    end
+  end
+
+  def self.channel
+    @channel ||= EventMachine::Channel.new
+  end
+end
+```
 
 Now that everything's stitched together, all users on the page will see its
 background changed when another user enters a search term. It looks something
 like this:
 
 ![](/images/server-sent-events/demo.gif)
+
+```text
+jp@oeuf:~$ curl http://picture-frame.herokuapp.com/subscribe
+
+event: picture
+data: {"url":"//farm1.staticflickr.com/48/177506457_6da382ee6d_z.jpg","keyword":"sushi"}
+
+event: picture
+data: {"url":"//farm4.staticflickr.com/3654/3649989777_5aecf0c923_z.jpg","keyword":"french fries"}
+
+event: picture
+data: {"url":"//farm5.staticflickr.com/4031/5074677539_647560db25_z.jpg","keyword":"staten island ferry"}
+
+event: picture
+data: {"url":"//farm7.staticflickr.com/6066/6135449745_5df2e0c5e7_z.jpg","keyword":"flatiron building"}
+```
+
 
 [The final application](http://picture-frame.herokuapp.com) is deployed to
 Heroku and [the source](http://github.com/jpignata/picture-frame) is on
