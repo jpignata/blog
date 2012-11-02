@@ -1,5 +1,7 @@
 require "redcarpet"
 
+require_relative "pygments_renderer"
+
 class ContentFile
   def initialize(file_path)
     @file_path = file_path
@@ -19,9 +21,10 @@ class ContentFile
   end
 
   def markdown_renderer
-    Redcarpet::Markdown.new(Redcarpet::Render::HTML,
-      autolink: true,
-      space_after_headers: true
+    Redcarpet::Markdown.new(PygmentsRenderer,
+      autolink:            true,
+      space_after_headers: true,
+      fenced_code_blocks:  true
     )
   end
 

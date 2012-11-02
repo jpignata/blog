@@ -12,7 +12,15 @@ it. You probably don't use multicast directly day-to-day, but if you're using
 a MacOS or Linux system it's likely to be a member of a couple of multicast
 groups by default.
 
-<script src="https://gist.github.com/3990906.js?file=netstat-g.txt"></script>
+```text
+jp@oeuf:~$ netstat -g
+...
+IPv4 Multicast Group Memberships
+
+Group               Link-layer Address  Netif
+224.0.0.1           1:0:5e:0:0:1        en0
+224.0.0.251         1:0:5e:0:0:fb       en0
+```
 
 `224.0.0.1` is the All Hosts multicast group.
 [`RFC1122`](http://www.ietf.org/rfc/rfc1112.txt) dictates that all hosts that
@@ -23,12 +31,22 @@ the .local domain.
 If we send an ICMP echo request to either of these addresses, we'll get back an
 ICMP echo reply for each member host:
 
-<script src="https://gist.github.com/3990906.js?file=ping.txt"></script>
+```text
+jp@oeuf:~$ ping 224.0.0.251
+PING 224.0.0.251 (224.0.0.251): 56 data bytes
+64 bytes from 192.168.1.5: icmp_seq=0 ttl=64 time=71.531 ms
+64 bytes from 192.168.1.6: icmp_seq=0 ttl=64 time=75.006 ms
+```
 
 Using `tcpdump` we can see that while we only send one request we get two replies
 with the same sequence number:
 
-<script src="https://gist.github.com/3990906.js?file=tcpdump.txt"></script>
+```text
+jp@oeuf:~$ sudo tcpdump -i en0 icmp
+20:46:43.659398 IP oeuf.home > 224.0.0.251: ICMP echo request, id 37572, seq 0, length 64
+20:46:43.744414 IP ipad.home > oeuf.home: ICMP echo reply, id 37572, seq 0, length 64
+20:46:43.744425 IP apple-tv.home > oeuf.home: ICMP echo reply, id 37572, seq 0, length 64
+```
 
 ### Multicasting in Ruby
 
@@ -43,7 +61,17 @@ UDP socket, sets the multicast TTL of the datagram to 1 to prevent it from
 being forwarded beyond our local network, and sends whatever the first
 command line argument passed to the script was across the socket.
 
-<script src="https://gist.github.com/3990906.js?file=send.rb"></script>
+```ruby
+require "socket"
+
+MULTICAST_ADDR = "224.0.0.1"
+PORT = 3000
+
+socket = UDPSocket.open
+socket.setsockopt(:IPPROTO_IP, :IP_MULTICAST_TTL, 1)
+socket.send(ARGV[0], 0, MULTICAST_ADDR, PORT)
+socket.close
+```
 
 `receive.rb` also opens a UDP socket but does a little more work to set itself
 up to receive messages from the multicast address group. It sets two options
@@ -54,7 +82,27 @@ multicast group. Lastly, it binds to the address and port and then sets up a
 small loop to block, wait for a message, and print its contents to the
 terminal.
 
-<script src="https://gist.github.com/3990906.js?file=receive.rb"></script>
+```ruby
+require "socket"
+require "ipaddr"
+
+MULTICAST_ADDR = "224.0.0.1"
+BIND_ADDR = "0.0.0.0"
+PORT = 3000
+
+socket = UDPSocket.new
+membership = IPAddr.new(MULTICAST_ADDR).hton + IPAddr.new(BIND_ADDR).hton
+
+socket.setsockopt(:IPPROTO_IP, :IP_ADD_MEMBERSHIP, membership)
+socket.setsockopt(:SOL_SOCKET, :SO_REUSEPORT, 1)
+
+socket.bind(:INADDR_ANY, PORT)
+
+loop do
+  message, _ = socket.recvfrom(255)
+  puts message
+end
+```
 
 ![](/images/multicast-in-ruby/demo.gif)
 
@@ -104,9 +152,30 @@ a backlog of messages to be able to draw chat history.
 three attributes: a client ID, the user's handle and some message content.
 Let's start with `Message` since it's a simple value object:
 
-<script src="https://gist.github.com/3990906.js?file=message.rb"></script>
+```ruby
+require "json"
 
-No surprises there. We define `attr_reader` for the properties we're bundling
+class Message
+  attr_reader :client_id, :handle, :content
+
+  def self.inflate(json)
+    attributes = JSON.parse(json)
+    new(attributes)
+  end
+
+  def initialize(attributes={})
+    @client_id = attributes.fetch("client_id")
+    @handle = attributes.fetch("handle")
+    @content = attributes.fetch("content")
+  end
+
+  def to_json
+    { client_id: client_id, handle: handle, content: content }.to_json
+  end
+end
+```
+
+No surprises there. We define an `attr_reader` for the properties we're bundling
 together and some convenience methods for JSON serialization and deserialization.
 
 Next we'll look at `Client`. It's the object that knows how to send and
@@ -115,7 +184,75 @@ sending messages and a hook for allowing another object to listen for new
 messages. Since it's the object responsible for chat operations, it will also
 generate and hold a random `client_id` and hold the user's chosen `handle`.
 
-<script src="https://gist.github.com/3990906.js?file=client.rb"></script>
+```ruby
+require "socket"
+require "thread"
+require "ipaddr"
+require "securerandom"
+
+class Client
+  MULTICAST_ADDR = "224.6.8.11"
+  BIND_ADDR = "0.0.0.0"
+  PORT = 6811
+
+  def initialize(handle)
+    @handle    = handle
+    @client_id = SecureRandom.hex(5)
+    @listeners = []
+  end
+
+  def add_message_listener(listener)
+    listen unless listening?
+    @listeners << listener
+  end
+
+  def transmit(content)
+    message = Message.new(
+      "client_id" => @client_id,
+      "handle"    => @handle,
+      "content"   => content
+    )
+
+    socket.send(message.to_json, 0, MULTICAST_ADDR, PORT)
+    message
+  end
+
+  private
+
+  def listen
+    socket.bind(BIND_ADDR, PORT)
+
+    Thread.new do
+      loop do
+        attributes, _ = socket.recvfrom(1024)
+        message = Message.inflate(attributes)
+
+        unless message.client_id == @client_id
+          @listeners.each { |listener| listener.new_message(message) }
+        end
+      end
+    end
+
+    @listening = true
+  end
+
+  def listening?
+    @listening == true
+  end
+
+  def socket
+    @socket ||= UDPSocket.open.tap do |socket|
+      socket.setsockopt(:IPPROTO_IP, :IP_ADD_MEMBERSHIP, bind_address)
+      socket.setsockopt(:IPPROTO_IP, :IP_MULTICAST_TTL, 1)
+      socket.setsockopt(:SOL_SOCKET, :SO_REUSEPORT, 1)
+    end
+  end
+
+  def bind_address
+    IPAddr.new(MULTICAST_ADDR).hton + IPAddr.new(BIND_ADDR).hton
+  end
+end
+```
 
 Much of this code was adapted from the `send.rb` and `receive.rb` scripts above
 but it has some of its own characteristics worth discussing. `listen` spins up
@@ -133,7 +270,49 @@ Window manages the UI and implements another dusty ruby wrapper -- `curses`.
 I'm going to elide most of these details as those incantations are obscure and
 will be the subject of a future article.
 
-<script src="https://gist.github.com/3990906.js?file=window.rb"></script>
+```ruby
+require "curses"
+
+class Window
+  include Curses
+
+  def initialize(client)
+    @client = client
+    @messages = []
+  end
+
+  def start
+    @client.add_message_listener(self)
+
+    loop do
+      capture_input
+    end
+  end
+
+  def new_message(message)
+    @messages << message
+    redraw
+  end
+
+  private
+
+  def capture_input
+    content = getstr
+
+    if content.length > 0
+      message = @client.transmit(content)
+      new_message(message)
+    end
+  end
+
+  def redraw
+    draw_text_field
+    draw_messages
+    cursor_to_input_line
+    refresh
+  end
+end
+```
 
 This class is fairly simple when most of the presentation layer cruft is
 set aside. On initialization a `Client` is passed in and a new array is
@@ -151,7 +330,20 @@ content to `Client` for transmission over the network. `Client` passes us back a
 Finally, we have some glue code to introduce `Client` and `Window` and start
 the program:
 
-<script src="https://gist.github.com/3990906.js?file=backchannel.rb"></script>
+```ruby
+require "backchannel/client"
+require "backchannel/window"
+require "backchannel/message"
+
+class Backchannel
+  def self.start(handle)
+    client = Client.new(handle)
+    window = Window.new(client)
+
+    window.start
+  end
+end
+```
 
 The result of these three small classes is an IRC-like program that allows any
 users connected over the same physical network to pass messages. Calling

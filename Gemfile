@@ -7,6 +7,7 @@ gem "sass"
 gem "sinatra"
 gem "thin"
 gem "psych"
+gem "pygmentize"
 
 group :development do
   gem "shotgun"
