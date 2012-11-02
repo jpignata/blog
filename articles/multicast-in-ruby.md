@@ -68,7 +68,7 @@ and e-reader formats.
 
 ### Chat, Serverlessly
 
-Articles about building a chat server in a given toolset is a trope of
+Articles about building a chat server in a given toolset are a trope of
 programming writing. Let's embrace the cliche and take that example but
 implement it in as a peer to peer service using multicast to allow chat
 clients on different hosts on the same network to exchange messages.
