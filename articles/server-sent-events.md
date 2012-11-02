@@ -342,9 +342,7 @@ like this:
 
 ![](/images/server-sent-events/demo.gif)
 
-```text
-jp@oeuf:~$ curl http://picture-frame.herokuapp.com/subscribe
-
+```javascript
 event: picture
 data: {"url":"//farm1.staticflickr.com/48/177506457_6da382ee6d_z.jpg","keyword":"sushi"}
 
