@@ -347,13 +347,13 @@ event: picture
 data: {"url":"//farm1.staticflickr.com/48/177506457_6da382ee6d_z.jpg","keyword":"sushi"}
 
 event: picture
-data: {"url":"//farm4.staticflickr.com/3654/3649989777_5aecf0c923_z.jpg","keyword":"french fries"}
+data: {"url":"//farm4.staticflickr.com/3611/3376337890_bdbd465a7b_z.jpg","keyword":"french fries"}
 
 event: picture
-data: {"url":"//farm5.staticflickr.com/4031/5074677539_647560db25_z.jpg","keyword":"staten island ferry"}
+data: {"url":"//farm5.staticflickr.com/4082/4861386139_e6d25a7b35_z.jpg","keyword":"staten island ferry"}
 
 event: picture
-data: {"url":"//farm7.staticflickr.com/6066/6135449745_5df2e0c5e7_z.jpg","keyword":"flatiron building"}
+data: {"url":"//farm4.staticflickr.com/3566/3683645594_f8f9ce7091_z.jpg","keyword":"flatiron building"}
 ```
 
 
