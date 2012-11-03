@@ -30,14 +30,9 @@ body {
         height: 50px;
         width: 320px;
         padding: 0; }
-      body #container header .contact {
-        float: left; }
-        body #container header .contact p {
-          font-size: 20px;
-          margin: 0; }
-      body #container header .rss {
-        float: left;
-        padding: 15px 15px 15px 30px; }
+      body #container header .contact p {
+        font-size: 20px;
+        margin: 0; }
     body #container nav {
       float: left;
       width: 320px; }
