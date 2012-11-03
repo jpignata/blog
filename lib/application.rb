@@ -5,6 +5,7 @@ require_relative "article"
 require_relative "article_index"
 require_relative "index_file"
 require_relative "content_file"
+require_relative "atom_feed"
 
 class Application < Sinatra::Base
   configure do
@@ -22,6 +23,11 @@ class Application < Sinatra::Base
     article  = @article_index.latest
 
     haml :article, locals: { articles: articles, article: article }
+  end
+
+  get "/index.atom" do
+    content_type "application/atom+xml"
+    AtomFeed.new(@article_index.all).to_xml
   end
 
   get "/*" do
