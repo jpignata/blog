@@ -3,7 +3,7 @@
     %title #{article.title.strip} :: tx.pignata.com
     %link{href: "/stylesheets/article.css", type: "text/css", rel: "stylesheet"}
     %link{href: "/stylesheets/pygments.css", type: "text/css", rel: "stylesheet"}
-    %link{href: "/index.atom", rel: "alternate", title: "john pignata", type: "application/atom+xml"}
+    %link{href: "http://feeds.feedburner.com/jpignata", rel: "alternate", title: "john pignata", type: "application/atom+xml"}
     %script{type: "text/javascript", src: "//use.typekit.net/wqu7hjl.js"}
 
     :javascript
@@ -42,7 +42,7 @@
               %a{href: article.permalink}= article.title
               %p #{article.date.strftime("%x")} &mdash; #{article.summary}
 
-        %a{href: "/index.atom"}
+        %a{href: "http://feeds.feedburner.com/jpignata"}
           %img{src: "/images/rss.png"}
 
       .left
