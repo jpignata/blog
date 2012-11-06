@@ -96,7 +96,7 @@ membership = IPAddr.new(MULTICAST_ADDR).hton + IPAddr.new(BIND_ADDR).hton
 socket.setsockopt(:IPPROTO_IP, :IP_ADD_MEMBERSHIP, membership)
 socket.setsockopt(:SOL_SOCKET, :SO_REUSEPORT, 1)
 
-socket.bind(:INADDR_ANY, PORT)
+socket.bind(BIND_ADDR, PORT)
 
 loop do
   message, _ = socket.recvfrom(255)
