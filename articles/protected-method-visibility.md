@@ -217,8 +217,8 @@ operator method and using privileged data from the sibling instance in the
 operations. While state in neither `Collection` changed, they were able to
 collaborate and return a new `Collection` with the desired `items`.
 
-`IPAddr is a class in the Ruby standard library which is a value object that
-`represents an IPv4 or IPv6 address. Under the hood it makes extensive use of
+`IPAddr` is a class in the Ruby standard library which is a value object that
+represents an IPv4 or IPv6 address. Under the hood it makes extensive use of
 `this pattern for manipulating the IP address it represent.
 
 Given an IP address (say, `192.168.0.77`) and a subnet mask
@@ -252,8 +252,8 @@ address | (~ IPAddr.new("255.255.255.248"))
 # is 192.168.0.72 and whose broadcast address is 192.168.0.79.
 ```
 
-`IPAddr exposes these operations but maintains immutability by cloning itself
-`and calling protected methods on the new instance.
+`IPAddr` exposes these operations but maintains immutability by cloning itself
+and calling protected methods on the new instance.
 
 ```ruby
 # lib/ipaddr.rb:108 (ruby 1.9.3-p286)
