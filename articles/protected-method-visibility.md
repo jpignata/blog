@@ -1,5 +1,5 @@
-When I'm reading Ruby code and I come across the `protected` keyword, I spend
-a moment taking a deeper look at the interface of the object using it.
+When I'm reading Ruby code and I come across protected methods, I spend
+a moment taking a deeper look at the interface of the object defining them.
 Protected method visibility is targeted to a very specific and seemingly rare
 use-case in Ruby: methods defined as protected are only callable by other
 objects whose class is of the same defining class or its subclasses. The
