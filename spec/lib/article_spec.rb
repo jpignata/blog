@@ -60,6 +60,12 @@ describe Article do
     end
   end
 
+  describe "#published" do
+    it "defaults to true" do
+      Article.new.should be_published
+    end
+  end
+
   describe "#content" do
     it "returns article file content using the content file parser" do
       file_parser_instance = stub

@@ -14,6 +14,7 @@ class Article
     @title       = attributes["title"]
     @summary     = attributes["summary"]
     @file_name   = attributes["file_name"]
+    @published   = attributes["published"] != false
     @permalink   = attributes.fetch("permalink") { default_permalink }
 
     @file_parser    = options.fetch(:file_parser) { ContentFile }
@@ -26,6 +27,10 @@ class Article
 
   def content
     @content ||= file_parser.new("#{@file_directory}/#{file_name}").content
+  end
+
+  def published?
+    @published
   end
 
   private

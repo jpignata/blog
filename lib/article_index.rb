@@ -22,8 +22,16 @@ class ArticleIndex
     articles
   end
 
+  def published
+    articles.select(&:published?)
+  end
+
   def latest
-    articles.first
+    published.first
+  end
+
+  def draft
+    articles.detect { |article| !article.published? }
   end
 
   def find_by_permalink(permalink)

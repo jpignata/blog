@@ -27,18 +27,33 @@ describe ArticleIndex do
     )
   }
 
-  let(:articles) { [second, first, third] }
+  let(:unpublished) {
+    Article.new(
+      "title"     => "unpublished",
+      "date"      => Date.parse("09/11/2001"),
+      "permalink" => "/unpublished.html",
+      "published" => false
+    )
+  }
+
+  let(:articles) { [second, first, third, unpublished] }
 
   subject(:article_index) { ArticleIndex.new(articles) }
 
   describe "#all" do
     it "returns all articles sorted in descending order by date" do
-      article_index.all.should eq([third, second, first])
+      article_index.all.should eq([unpublished, third, second, first])
+    end
+  end
+
+  describe "#published" do
+    it "returns all published articles sorted in descending order by date" do
+      article_index.published.should eq([third, second, first])
     end
   end
 
   describe "#latest" do
-    it "returns the latest article" do
+    it "returns the latest published article" do
       article_index.latest.should eq(third)
     end
   end

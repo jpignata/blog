@@ -19,20 +19,28 @@ class Application < Sinatra::Base
   end
 
   get "/" do
-    articles = @article_index.all
+    articles = @article_index.published
     article  = @article_index.latest
 
     haml :article, locals: { articles: articles, article: article }
   end
 
+  get "/draft" do
+    if article = @article_index.draft
+      redirect article.permalink
+    else
+      redirect "/"
+    end
+  end
+
   get "/index.atom" do
     content_type "application/atom+xml"
-    AtomFeed.new(@article_index.all).to_xml
+    AtomFeed.new(@articles).to_xml
   end
 
   get "/*" do
     permalink = params[:splat].join("/").prepend("/")
-    articles  = @article_index.all
+    articles  = @article_index.published
 
     if article = @article_index.find_by_permalink(permalink)
       haml :article, locals: { articles: articles, article: article }
