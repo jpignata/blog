@@ -9,10 +9,11 @@ inconsistencies, our inattention to detail, our procrastinations, our
 quick-and-dirty changes, our hidden skeletons, our dirty laundry. More rarely,
 they will be the beneficiaries of our discipline, deliberation, and preparation.
 
-You are in the best position to empathize with and anticipate the needs of
-Future Developer. Every good decision we make for our project will have ripple
-effects on his or her productivity. Why is this important? As Bob Martin asks
-in [Clean Code](http://www.amazon.com/Clean-Code-Handbook-Software-
+As a current developer on your project, you are in the best position to
+empathize with and anticipate the needs of Future Developer. Every good
+decision we make for our project will have ripple effects on his or her
+productivity. Why is this important? As Bob Martin asks in [Clean
+Code](http://www.amazon.com/Clean-Code-Handbook-Software-
 Craftsmanship/dp/0132350882), "Have you ever been significantly impeded by bad
 code? So then -- why did you write it?" The same strategies to improve the
 conditions for future generations of teams working on your project will serve
@@ -42,12 +43,12 @@ to solve problems in the same sorts of ways in a codebase, Future Developer
 can start to predict how pieces of the codebase work together reducing the
 amount of time necessary to diagnose problems and implement changes.
 
-Often what we leave behind is a hodgepodge of patterns and conventions which
-never made it to universal acceptance across the team or have been ignored in
-the codebase as old cruft. This happens for a variety of reasons: the
-conventions introduced didn't work well enough to make it into other areas of
-the codebase or maybe new developers didn't know there was a convention or
-pattern for handling a given requirement.
+Often what we leave behind is a hodgepodge of patterns which never quite
+became conventions or have been ignored in the codebase as old cruft. This
+happens for a variety of reasons: the conventions introduced didn't work well
+enough to make it into other areas of the codebase or maybe new developers
+didn't know there was a convention or pattern for handling a given
+requirement.
 
 Rails' opinions and conventions are powerful. They allow developers to join a
 project and quickly be productive if they've had any exposure to projects that
@@ -262,44 +263,64 @@ is incorrect documentation.
 
 One way we provide documentation to a project is through the tests we leave
 behind. These tests not only describe what the behavior of a given component
-is but it enforces that the documentation is not out of date as it's
-executable. Tools like RSpec and `minitest/spec` assist us in generating this
+is but it enforces that this documentation as it's executable. Unlike a comment
+we can't leave future lies in the test suite; it's either green or it isn't.
+Tools like RSpec and `minitest/spec` assist us in generating this
 by-product documentation by encrouaging prose within the defining block of the
 example. Unfortunately we sometimes look past the English words we're typing in
-our rush to get to the actual code part of the red-green-refactor cycle. The
+our rush to get to the actual code in the red-green-refactor cycle. The
 result of neglecting the English descriptions is that it's possible our tests
 are not properly reflecting our objects as well as we think they might be.
 
-It's almost as bad as finding a project with no test suite is finding a project
-whose test suite doesn't help us in understanding how the system works. Test code
-is code that also needs to be maintained and as such they need to very clearly
-assert why they exist to a future reader. I understand the object "should" do something,
-but why should it?
+Almost as painful as finding a project with no test suite is finding a project
+whose test suite doesn't help in understanding how the system works. Tests are
+code which also needs to be maintained and as such they need to very clearly
+assert why they exist to a future reader. I understand the object "should" do
+something, but why should it?
+
+```ruby
+it "works" do
+  data = File.open("fixtures/projects.txt").read
+  index = ProjectIndex.new(data)
+  index.should have(40).projects
+
+  last_project = projects.last
+  last_project.title.should eq("ORCA")
+  last_project.customer.should eq("Romney-Ryan 2012")
+  last_project.deploy_date.should eq(Date.parse("2012-11-06"))
+end
+```
+
+Well, what works? That one word description is meaningless and the example has
+multiple assertions which provide any context.
 
 In building spec-style tests you should keep the English language descriptions
 you're writing front and center. One way to do this is to run RSpec with the
 documentation format:
 
 ```text
-jp@oeuf:~/workspace/rspec-core(master)$ be rspec --format documentation spec
-...
-an example
-  declared pending with metadata
-    uses the value assigned to :pending as the message
-    sets the message to 'No reason given' if :pending => true
-  with no block
-    is listed as pending with 'Not yet implemented'
-  with no args
-    is listed as pending with the default message
+jp@oeuf:~/workspace/project-manager(master)$ be rspec --format documentation spec
+ProjectIndex
+  .new
+    instantiates an index given the contents of a project CSV file
+  #projects
+    returns a collection of projects from the index
+Project
+  #title
+    returns the project title
+  #customer
+    returns the Customer record for the project
+  #deploy_date
+    calculates the deploy date from the latest project status
 ```
 
 Instead of a field of green dots the documentation format outputs the nested
 descriptions, contexts, and example titles you've been typing. This allows you
-to scan through to see if your tests reveal actually how the object is
-intended to behave. We'd do well to focus on that while we're building components
-with an emphasis on coherence. Use the refactor step of red-green-refactor to
-actually make your tests a coherent narrative of why that object exists,
-how it behaves, and why this behavior exists.
+to skim through to see if your tests reveal actually how the object is
+intended to behave. Focusing on the output of the documentation formatter can
+help improve the communiative value of a test suite. Use the refactor step of
+red-green-refactor to actually make your tests a coherent explanation of why
+that object exists, how it behaves, and why this behavior exists.
 
 ### Future Developer, Delighted
 
