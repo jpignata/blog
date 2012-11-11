@@ -17,19 +17,16 @@ Craftsmanship/dp/0132350882), "Have you ever been significantly impeded by bad
 code? So then -- why did you write it?" The same strategies to improve the
 conditions for future generations of teams working on your project will serve
 your team well in the present. When you come back to some obscure corner of
-the codebase that you cobble together six months ago, you're likely to have
+the codebase that you cobbled together six months ago, you're likely to have
 only a little more context than Future Developer will when he or she sees it
 or the first time. The clues and polish you've left for other developers will
 benefit your future self. Projects that are poorly maintained are draining to
 contribute to and lead to team attrition. Investing in the quality and future
-maintainability of the software you're producing is an investment in a happy,
+maintainability of the software you're creating is an investment in a happy,
 productive workplace for the present and future.
 
-Many of the oft-discussed strategies for reducing friction against change in a
-software project are applicable for making the life of Future Developer a
-little easier when they dust off some corner of our codebase for the first
-time. I'm going to pick a few of the practices in no particular order and we'll
-look at how we can help setup Future Developer for success.
+I'm going to pick a few practices in no particular order that we can use to
+setup Future Developer for success.
 
 ### 1. Be Consistent
 
@@ -66,10 +63,10 @@ Don't have half a dozen different ways of configuring aspects of your system
 and make it clear how a controller should be built in your system. Once you've
 experimented for a while and have settled on an approach, take the time to go
 back to previous work and refactor into the new pattern. This doesn't mean
-that you should store all of your configuration in one place. There's good
-reason, for example, to have some configuration stored with the project and
-some stored in the environment to aid in deployment, but there should be one
-common structure and access pattern for accessing configuration data.
+that you should add arbitrary constraints. There's good reason, for example,
+to have some configuration stored with the project and some stored in the
+environment to aid in deployment, but there should be one common structure and
+access pattern for using configuration data.
 
 Add conventions to your README or selected documentation repository. This will
 give Future Developer a head start on adding functionality to the system and
@@ -95,8 +92,7 @@ around like a [boat
 anchor](http://en.wikipedia.org/wiki/Boat_anchor_(computer_science\)), wasting
 cycles maintaining it because there's a small chance you may possibly one day
 need part of it. Maybe. You don't know, but you spent a lot of time building
-it so rather than deleting it the code continues to slowly rot in your
-codebase.
+it so rather than deleting it you allow the code to slowly rot in your repository.
 
 What's even more costly is that the continued existence of this code is a
 possible trap for Future Developer. It detracts attention from the components
@@ -226,10 +222,10 @@ and to enforce the surface area of the object's public interface.
 
 ### 5. Leave Comments, Not Too Many, Mostly RDoc
 
-Developers have had [a complicated relationship with code
-comments](https://www.google.com/search?q=site%3Ac2.com+comments). On one hand
-comments are extremely helpful in assisting a reader in understanding how a
-given piece of code works. On the other hand as nothing enforces their
+As developers our feelings about code comments can be best described as
+[ambivalent](https://www.google.com/search?q=site%3Ac2.com+comments). On one
+hand comments are extremely helpful in assisting a reader in understanding how
+a given piece of code works. On the other hand as nothing enforces their
 correctness, code comments are lies waiting to be told to the future. When
 asked developers will say they value documentation but often projects have
 very little beyond a mostly-out-of-date README and maybe a graveyard wiki
@@ -238,11 +234,12 @@ expect thorough RDoc documentation, an up-to-date README, and good example
 code and when not present we'll complain bitterly. Scumbag developer: doesn't
 maintain documentation, expects it from others.
 
-As we pay more attention to things like the Single Responsibility Principle
+As we pay more attention to things like the
+[Single Responsibility Principle](http://www.objectmentor.com/resources/articles/srp.pdf)
 and use patterns to loosen the coupling between objects we start to see
 systems composed of many small objects wired together at runtime. While this
-makes systems more easily changable and objects more reusable there's a trade-
-off: understanding an object's place within the larger system may be less
+makes systems more pliable and objects more reusable there's a trade-off:
+understanding an object's place within the larger system may be less
 obvious and as such take more effort.  You can use all of the usual
 refactorings to eliminate pesky inline comments and make your object as
 readable as possible but it still might baffle Future Developer as to how the
@@ -307,12 +304,12 @@ how it behaves, and why this behavior exists.
 ### Future Developer, Delighted
 
 These are just a few of the ways we can optimize for change with the
-assumption that somebody else will be charged with making those changes. Think
-about the next sets of eyes that will be responsible for building and
-operating your current project when you're working on it. We've all felt pangs
-of guilt about the maintainability or quality of something we've shipped.
-Instead of feeling sympathy for all of the challenges you've left in the
-codebase, begin to tally all of the drinks Future Developer will owe you for
-all of the tidy work you've left for him or her.
+reasonable assumption that somebody else will be charged with making those
+changes. Think about the next sets of eyes that will be responsible for
+building and operating your current project when you're working on it. We've
+all felt pangs of guilt about the maintainability or quality of something
+we've shipped. Instead of feeling sympathy for all of the challenges you've
+left in the codebase, begin to tally all of the drinks Future Developer will
+owe you for all of the tidy work you've left behind.
 
 _Thanks to [Dave Yeu](http://foodforsamurai.com/) from whom I've co-opted (read: stolen) the term "future developer."_
