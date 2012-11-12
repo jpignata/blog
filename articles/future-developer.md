@@ -260,7 +260,7 @@ keeping these comments up to date they could have negative value and
 mislead a future reader of the code. The only thing worse than no documentation
 is incorrect documentation.
 
-### 6. Write intention-revealing tests
+### 6. Write Intention Revealing Tests
 
 One way we provide documentation to a project is through the tests we leave
 behind. These tests not only describe what the behavior of a given component
