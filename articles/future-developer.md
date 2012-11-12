@@ -254,7 +254,7 @@ documentation as part of your project will give Future Developer more context
 when he or she is trying to understand the role of an object in the larger
 context of your system. Adding a short, declarative sentence to the top of a
 class and/or method indicating what it does could have substantial value for
-future readers of the code. That said, wthout a strong shared culture of
+future readers of the code. That said, without a strong shared culture of
 keeping these comments up to date they could have negative value and
 mislead a future reader of the code. The only thing worse than no documentation
 is incorrect documentation.
@@ -263,20 +263,19 @@ is incorrect documentation.
 
 One way we provide documentation to a project is through the tests we leave
 behind. These tests not only describe what the behavior of a given component
-is but it enforces that this documentation as it's executable. Unlike a comment
+is but it enforces this documentation is correct as it's executable. Unlike a comment
 we can't leave future lies in the test suite; it's either green or it isn't.
 Tools like RSpec and `minitest/spec` assist us in generating this
-by-product documentation by encrouaging prose within the defining block of the
+by-product documentation by encouraging prose within the defining block of the
 example. Unfortunately we sometimes look past the English words we're typing in
 our rush to get to the actual code in the red-green-refactor cycle. The
 result of neglecting the English descriptions is that it's possible our tests
-are not properly reflecting our objects as well as we think they might be.
+are not properly reflecting our objects' behavior as well as we think they might be.
 
 Almost as painful as finding a project with no test suite is finding a project
 whose test suite doesn't help in understanding how the system works. Tests are
 code which also needs to be maintained and as such they need to very clearly
-assert why they exist to a future reader. I understand the object "should" do
-something, but why should it?
+assert why they exist to a future reader.
 
 ```ruby
 it "works" do
