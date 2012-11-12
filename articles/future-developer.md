@@ -88,8 +88,7 @@ leave it, we may reuse that one day." This is a false dilemma -- carrying
 around a slowly rotting section of code for possible future reuse assumes that
 reusing those parts of the codebase involves no changes. If we're ignoring it
 because it's not actually live, it's not likely to be something we can just
-"turn on" without significant work. You're carrying around that old code like
-around like a [boat
+"turn on" without significant work. You're carrying that old code around like a [boat
 anchor](http://en.wikipedia.org/wiki/Boat_anchor_(computer_science\)), wasting
 cycles maintaining it because there's a small chance you may possibly one day
 need part of it. Maybe. You don't know, but you spent a lot of time building
