@@ -35,7 +35,7 @@ class Application < Sinatra::Base
 
   get "/index.atom" do
     content_type "application/atom+xml"
-    AtomFeed.new(@articles).to_xml
+    AtomFeed.new(@article_index.published).to_xml
   end
 
   get "/*" do
