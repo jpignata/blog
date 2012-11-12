@@ -29,7 +29,7 @@ productive workplace for the present and future.
 I'm going to pick a few practices in no particular order that we can use to
 set Future Developer up for success.
 
-### 1. Refactor for Consistency
+### 1. Refactor toward Consistency
 
 As projects age and requirements become more complex, we tend to introduce new
 patterns and designs to manage this complexity. It's hard to tell if a pattern
@@ -142,7 +142,7 @@ to read and understand. Do Future Developer a favor and ensure you're leaving be
 an intelligible paper trail that contains the right amount of detail.
 
 ```text
-jp@oeuf:~/workspace/blog(master*)$ git log --oneline app/controllers/application_controller.rb
+jp@oeuf:~/workspace/blog(master*)$ git log app/controllers/application_controller.rb
 commit 8ec7f998fb74a80886ece47f0a51bd03b0460c7a
 Author: John Pignata <john@pignata.com>
 Date:   Sat Nov 3 14:11:12 2012 -0400
