@@ -27,9 +27,9 @@ maintainability of the software you're creating is an investment in a happy,
 productive workplace for the present and future.
 
 I'm going to pick a few practices in no particular order that we can use to
-setup Future Developer for success.
+set Future Developer up for success.
 
-### 1. Be Consistent
+### 1. Refactor for Consistency
 
 As projects age and requirements become more complex, we tend to introduce new
 patterns and designs to manage this complexity. It's hard to tell if a pattern

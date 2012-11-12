@@ -1,7 +1,6 @@
 - title: Being for the Benefit of Future Developer
   date: 2012-11-11
   file_name: future-developer.md
-  published: false
   summary: |
     A software project passes through the hands of many different developers in
     its lifetime.  How can we keep our project prepared for the future teams of
