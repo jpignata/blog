@@ -291,7 +291,7 @@ end
 ```
 
 Well, what works? That one word description is meaningless and the example has
-multiple assertions which provide any context.
+multiple assertions which don't provide any context.
 
 In building spec-style tests you should keep the English language descriptions
 you're writing front and center. One way to do this is to run RSpec with the
