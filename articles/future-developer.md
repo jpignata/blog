@@ -112,11 +112,12 @@ any value then why did you turn it off to begin with?
 
 ### 3. Leave a Coherent Paper Trail
 
-Aside from code itself, some of the tools we use in support of writing code have
-their own paper trails. For example, there are
-[commonly accepted practices](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
-about what constitutes good `git` commit message hygiene and yet projects continue
-to accumulate commit histories like this contrived example:
+Aside from our project itself, some of the tools we use in support of writing
+code have their own artifacts. For example, there are [commonly accepted
+practices](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
+about what constitutes good `git` commit message hygiene and
+yet projects continue to accumulate commit histories like this contrived
+example:
 
 ```text
 jp@oeuf:~/workspace/blog(master*)$ git log --oneline app/controllers/application_controller.rb
