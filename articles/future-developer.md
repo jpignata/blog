@@ -9,11 +9,11 @@ inconsistencies, our inattention to detail, our procrastinations, our
 quick-and-dirty changes, our hidden skeletons, our dirty laundry. More rarely,
 they will be the beneficiaries of our discipline, deliberation, and preparation.
 
-As a current developer on your project, you are in the best position to
+As a developer on your project you are in the best possible position to
 empathize with and anticipate the needs of Future Developer. Every good
 decision we make for our project will have ripple effects on his or her
 productivity. Why is this important? As Bob Martin asks in [Clean
-Code](http://www.amazon.com/Clean-Code-Handbook-Software-
+Code](http://www.amazon.com/Clean- Code-Handbook-Software-
 Craftsmanship/dp/0132350882), "Have you ever been significantly impeded by bad
 code? So then -- why did you write it?" The same strategies to improve the
 conditions for future generations of teams working on your project will serve
