@@ -317,7 +317,7 @@ Instead of a field of green dots the documentation format outputs the nested
 descriptions, contexts, and example titles you've been typing. This allows you
 to skim through to see if your tests reveal actually how the object is
 intended to behave. Focusing on the output of the documentation formatter can
-help improve the communiative value of a test suite. Use the refactor step of
+help improve the communicative value of a test suite. Use the refactor step of
 red-green-refactor to actually make your tests a coherent explanation of why
 that object exists, how it behaves, and why this behavior exists.
 
