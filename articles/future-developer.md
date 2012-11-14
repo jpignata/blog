@@ -86,13 +86,14 @@ Sometimes we're reluctant to delete this code because we're not sure if the
 feature will be resurrected. Your product manager, when asked, might say "no,
 leave it, we may reuse that one day." This is a false dilemma -- carrying
 around a slowly rotting section of code for possible future reuse assumes that
-reusing those parts of the codebase involves no changes. If we're ignoring it
-because it's not actually live, it's not likely to be something we can just
-"turn on" without significant work. You're carrying that old code around like a [boat
-anchor](http://en.wikipedia.org/wiki/Boat_anchor_(computer_science\)), wasting
-cycles maintaining it because there's a small chance you may possibly one day
-need part of it. Maybe. You don't know, but you spent a lot of time building
-it so rather than deleting it you allow the code to slowly rot in your repository.
+reusing those parts of the codebase involves just flicking a switch. If we're
+ignoring it because it's not actually live, it's not likely to be something we
+can just "turn on" without significant work. You're carrying that old code around
+like a [boat anchor](http://en.wikipedia.org/wiki/Boat_anchor_(computer_science\)),
+wasting cycles maintaining it because there's a small chance you may possibly
+one day need part of it. Maybe. You don't know, but you spent a lot of time
+building it so rather than deleting it you allow the code to slowly rot in your
+repository.
 
 What's even more costly is that the continued existence of this code is a
 possible trap for Future Developer. It detracts attention from the components
