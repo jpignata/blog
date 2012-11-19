@@ -1,3 +1,13 @@
+- title: |
+    Concurrency Patterns in Ruby: Futures
+  date: 2012-11-18
+  file_name: futures.md
+  permalink: /2012/11/concurrency-patterns-in-ruby-futures.html
+  summary: |
+    Concurrency! Threads! Don't be afraid! Sometimes we just need to reach for
+    patterns that help us reason about what we're asking our computers to do.
+    Let's take a closer look at one pattern called futures.
+
 - title: Being for the Benefit of Future Developer
   date: 2012-11-11
   file_name: future-developer.md
