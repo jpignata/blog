@@ -347,8 +347,8 @@ sys   0m0.164s
 ```
 
 It's 4.5x faster because each request starts when we call `future` and happens
-concurrently. It's like making 25 people making a phone call at the same time
-rather than one person making 25 phone calls in serial.
+concurrently. It's like 25 people making a phone call at the same time versus
+one person making 25 phone calls one at a time.
 
 This finished command line application is on [GitHub](http://github.com/jpignata/crawler).
 
