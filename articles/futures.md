@@ -19,32 +19,42 @@ Let's scratch out a basic implementation of a `Future` proxy in ruby. In its
 most basic form, it could look something like this:
 
 ```ruby
-class Future
+class Future < BasicObject
   def initialize(callable)
-    @callable = callable
-  end
-
-  def run
-    @thread ||= Thread.new { @value = @callable.call }
-
-    self
+    @thread ||= ::Thread.new { callable.call }
   end
 
   def value
-    run
-    @thread.join unless defined?(@value)
+    @thread.value
+  end
 
-    @value
+  def inspect
+    if @thread.alive?
+      "#<Future running>"
+    else
+      value.inspect
+    end
+  end
+
+  def method_missing(method, *args)
+    value.send(method, *args)
+  end
+
+  def respond_to_missing?(method, include_private = false)
+    value.respond_to?(method)
   end
 end
 ```
 
-We have a simple class that is instantiated with a `callable` which is a `Proc`
-or other object that responds to `call`. It exposes two methods. The first,
-`run`, starts a thread in the background which invokes `call` on the given
-`callable` object and sets the result as an ivar. The second, `value`, will
-return the value if it's present or join the thread and block until it is
-available.
+We start with an object that derives from `BasicObject` and is instantiated
+with a `Proc` or other object that responds to `call`. In the initializer a
+background thread is created and the callable is called within it. Any methods
+received by `Future` will be proxied to `Thread#value` which is the last
+returned value from the thread. If the `Thread` is still working on
+calculating the value, this call will block until the `Thread` is finished.
+This ensures that a caller can always retrieve the value if it's needed.
+`Future` also has an `inspect` method which will return a static string if the
+`Thread` is still running or defer to the value if the `Thread` is finished.
 
 We'll also add a convenience method to Kernel so we can use it anywhere we
 want.
@@ -52,20 +62,35 @@ want.
 ```ruby
 module Kernel
   def future(&block)
-    Future.new(block).run
+    Future.new(block)
   end
 end
 ```
 
-This method instantiates a new `Future`, runs it, and returns the proxy back to
-the caller. Now we can use the `future` method to dispatch arbitrary tasks for
-background execution and use the returned proxy to access the computed values
-later in execution.
+This method instantiates a new `Future` which runs the given block and returns
+the proxy back to the caller. Now we can use the `future` method to dispatch
+arbitrary tasks for background execution and use the returned proxy to access
+the computed values later in execution.
 
 ```ruby
 >> calculation = future { 4 * 4 }
-=> #<Future:0x007fa9511a2c08 @callable=#<Proc:0x007fa9511a2c30@(irb):10>, @thread=#<Thread:0x007fa9511a2be0 run>>
+=> #<Future running>
 >> calculation.value
+=> 16
+>> calculation
+=> 16
+```
+
+If we tried to access the result of a long running calculation, it'd block
+until that value was available:
+
+```ruby
+>> calculation = future { sleep 5; 4 * 4 }
+=> #<Future running>
+>> calculation.value
+
+[about five seconds pass]
+
 => 16
 ```
 
@@ -306,28 +331,15 @@ sys   0m0.161s
 ```
 
 Pretty pokey. Now let's use our `Future` object to run the requests. We'll
-modify `Crawler` to first create a future for each URL and to pass each `value`
-returned to the `Outputter`:
+modify `Crawler` to wrap each `Page` in a future for each URL.
 
 ```ruby
 class Crawler
-  def initialize(index)
-    @index = index
-  end
-
-  def crawl
-    pages.each do |page|
-      Outputter.new(page).output
-    end
-  end
+  ...
 
   private
 
   def pages
-    futures.map(&:value)
-  end
-
-  def futures
     @index.urls.map do |url|
       future { Page.new(url).get }
     end
