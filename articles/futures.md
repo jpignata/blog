@@ -41,7 +41,7 @@ class Future < BasicObject
   end
 
   def respond_to_missing?(method, include_private = false)
-    value.respond_to?(method)
+    value.respond_to?(method, include_private)
   end
 end
 ```
