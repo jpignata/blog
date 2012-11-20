@@ -84,15 +84,7 @@ the computed values later in execution.
 If we tried to access the result of a long running calculation, it'd block
 until that value was available:
 
-```ruby
->> calculation = future { sleep 5; 4 * 4 }
-=> #<Future running>
->> calculation.value
-
-[about five seconds pass]
-
-=> 16
-```
+![](/images/futures/demo.gif)
 
 As `Future` calls the block in a background thread, execution of multiple
 futures will happen concurrently:
