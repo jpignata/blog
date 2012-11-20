@@ -119,7 +119,7 @@ in about two seconds.
 ### Service Oriented Design
 
 A practical example of why concurrency is important and where a pattern like
-this might apply is within service oriented systems. As we begin to break down
+this might apply is within service oriented systems. As we continue to break down
 our monolithic applications into services and daemons, within a web request we
 may need to make some number of remote service calls in order to render a page
 of content. A user might be authenticated via a user service, the page's
@@ -140,10 +140,11 @@ For every 100ms delay they were able to slice off of page load times,
 So even if each request took 1 millisecond, if they were all done serially that
 would cost 100 milliseconds and possibly one percent of sales. Considering the
 complexity of what these services likely do, it seems reasonable that many take
-longer to execute than that and that Amazon is probably doing much of this work
-concurrently.
+longer to execute than that. Running these requests concurrently is one way to
+ensure that response time doesn't bloat in line with the number of services that
+are required to assemble a response.
 
-Using concurrent requests when farming portions of responsibility across
+Using concurrent requests when distributing of responsibilities across
 network-available services will make the most efficient use of our resources,
 will reduce wall clock running time for requests, and allow our systems to
 handle more transactions over a given amount of time.
@@ -308,15 +309,8 @@ EVER since I quit hanging out in Baltimore dive bars, the only place where I
 still regularly find myself in hostile confrontations with my fellow man is
 Amtrak’s Quiet Car. The Quiet Car, in case you don’t know, is usually the first
 car in Amtrak’s coach section, right behind business class. Loud talking is
-forbidden there — any conversations are to be conducted in whispers. Cellphones
-off; music and movies on headphones only. There are little signs hanging from
-the ceiling of the aisle that explain this, along with a finger-to-lips icon.
-The conductor usually makes an announcement explaining the protocol.
-Nevertheless I often see people who are ignorant of the Quiet Car’s rules take
-out their cellphones to resume their endless conversation, only to get a polite
-but stern talking-to from a fellow passenger.
-
 ...
+
 real  0m32.405s
 user  0m2.403s
 sys   0m0.161s
@@ -358,12 +352,12 @@ This finished command line application is on [GitHub](http://github.com/jpignata
 
 ### Our Concurrent Futures
 
-The rise of service-oriented systems and the reality that we're likely to keep
-getting more cores rather than faster processors in our computers will make
-concurrency tools even more important when building our applications. Patterns
-like futures allow us to more easily reason about what's actually happening in
-a concurrent program. While our naive implementation isn't suitable for real
-world use due to its lack of any error handling or the absence of a pool of
-threads, the [Celluloid](http://github.com/celluloid/celluloid) library has a
-[futures implementation](https://github.com/celluloid/celluloid/wiki/futures)
+The continued emphasis on service-oriented systems and the reality that we're
+likely to keep getting more cores rather than faster processors in our
+computers will make concurrency tools even more important when building our
+applications. Patterns like futures allow us to more easily reason about what's
+actually happening in a concurrent program. While our naive implementation
+isn't suitable for real world use due to its lack of any error handling or the
+absence of a pool of threads, the [Celluloid](http://github.com/celluloid/celluloid)
+library has a [futures implementation](https://github.com/celluloid/celluloid/wiki/futures)
 that is ready to be used in your production applications.
