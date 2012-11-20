@@ -222,8 +222,9 @@ class Index
 end
 ```
 
-This object is composed of a page and has a method to return 25 of the absolute
-`urls` on the page. This will exclude internal navigation links from the header.
+This object is composed of a `Page` and has a method to return 25 of the
+absolute `urls` scraped from the HTML. This is a small cheat to exclude
+internal navigation links from the header.
 
 Next we'll put together a simple `Crawler` to use these objects to get the
 content from Hacker News. Our first stab at this will be synchronous so each
@@ -317,7 +318,7 @@ sys   0m0.161s
 ```
 
 Pretty pokey. Now let's use our `Future` object to run the requests. We'll
-modify `Crawler` to wrap each `Page` in a future for each URL.
+modify `Crawler` to wrap each `Page#get` call in a future block. 
 
 ```ruby
 class Crawler
