@@ -9,7 +9,7 @@ Services that use multicasting are not often found on the public internet due
 to the complexities involved in sharing this subscription state between
 neighboring external networks and the lack of incentive for ISPs to support
 it. You probably don't use multicast directly day-to-day, but if you're using
-a MacOS or Linux system it's likely to be a member of a couple of multicast
+a Mac OS or Linux system it's likely to be a member of a couple of multicast
 groups by default.
 
 ```text
