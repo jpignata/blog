@@ -1,4 +1,13 @@
 - title: |
+    Your Objects, the Unix Way: Applying the Unix Philosophy to Object-Oriented Design
+  date: 2012-11-28
+  file_name: your-objects-the-unix-way.md
+  permalink: /2012/11/applying-the-unix-philosophy-to-object-oriented-design.html
+  summary: |
+    What lessons can we learn from the Unix philosophy that can be applied to
+    the designs of the components in our applications?
+
+- title: |
     Concurrency Patterns in Ruby: Futures
   date: 2012-11-19
   file_name: futures.md
