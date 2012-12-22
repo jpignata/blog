@@ -15,4 +15,4 @@ This sentence describes what ultimately became the Unix pipeline: the chaining
 together of a set of programs such that the output of one is fed into the next
 as input.
 
-[Continue reading on Code Climate](http://blog.codeclimate.com)
+[Continue reading on Code Climate](http://blog.codeclimate.com/blog/2012/11/28/your-objects-the-unix-way/)
