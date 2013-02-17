@@ -4,9 +4,17 @@
   file_name: future-developer-talk.md
   permalink: /2013/02/dumbodevs-future-developer-talk.html
   summary: |
-    A software project passes through the hands of many different developers in
-    its lifetime.  How can we keep our project prepared for the future teams of
-    developers that will inherit it?
+    Video and slides from a talk given at the DUMBO Developers meetup that
+    examines the ways we can prepare our codebases for future generations.
+
+- title: |
+    Talk: Kafka: The Great Logfile in the Sky
+  date: 2013-02-15
+  file_name: kafka-talk.md
+  permalink: /2013/02/kafka-the-great-logfile-in-sky.md
+  summary: |
+    Video and slides from a talk given at the Lone Star Ruby Conference about
+    Apache Kafka.
 
 - title: |
     Your Objects, the Unix Way: Applying the Unix Philosophy to Object-Oriented Design
