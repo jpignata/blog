@@ -1,4 +1,14 @@
 - title: |
+    Talk: Being for the Benefit of Future Developer
+  date: 2013-02-15
+  file_name: future-developer-talk.md
+  permalink: /2013/02/dumbodevs-future-developer-talk.html
+  summary: |
+    A software project passes through the hands of many different developers in
+    its lifetime.  How can we keep our project prepared for the future teams of
+    developers that will inherit it?
+
+- title: |
     Your Objects, the Unix Way: Applying the Unix Philosophy to Object-Oriented Design
   date: 2012-11-28
   file_name: your-objects-the-unix-way.md
