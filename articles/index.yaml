@@ -1,4 +1,15 @@
 - title: |
+    Talk: A Brief Aside on Request Queueing
+  date: 2013-02-15
+  file_name: request-queueing-talk.md
+  permalink: /2013/03/nycrb-request-queueing-talk.html
+  summary: |
+    Request queueing is the topic du jour amongst Ruby developers operating web
+    systems. What's actually going on in that fat green band in New Relic? In this
+    short talk we'll look at how that number is calculated, what it suggests, and
+    what we should do about it.
+
+- title: |
     Talk: Being for the Benefit of Future Developer
   date: 2013-02-15
   file_name: future-developer-talk.md
