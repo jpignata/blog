@@ -9,7 +9,7 @@ Services that use multicasting are not often found on the public internet due
 to the complexities involved in sharing this subscription state between
 neighboring external networks and the lack of incentive for ISPs to support
 it. You probably don't use multicast directly day-to-day, but if you're using
-a Mac OS or Linux system it's likely to be a member of a couple of multicast
+a OS X or Linux system it's likely to be a member of a couple of multicast
 groups by default.
 
 ```text
@@ -25,7 +25,7 @@ Group               Link-layer Address  Netif
 `224.0.0.1` is the All Hosts multicast group.
 [`RFC1122`](http://www.ietf.org/rfc/rfc1112.txt) dictates that all hosts that
 fully support multicasting must always maintain a membership for it.
-224.0.0.251 is the mDNS multicast group which MacOS uses for DNS resolution of
+224.0.0.251 is the mDNS multicast group which OS X uses for DNS resolution of
 the .local domain.
 
 If we send an ICMP echo request to either of these addresses, we'll get back an
