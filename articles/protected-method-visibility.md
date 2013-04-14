@@ -82,10 +82,10 @@ class Collection
 end
 ```
 
-`Collection instances can now compare themselves to each other while still
-`hiding their data from other callers. Collection objects will only respond to
-`items for sibling Collection instances; calls from other objects will raise a
-`NoMethodError.
+`Collection` instances can now compare themselves to each other while still
+hiding their data from other callers. `Collection` objects will only respond to
+items for sibling `Collection` instances; calls from other objects will raise a
+`NoMethodError`.
 
 ```ruby
 Collection.new([1, 2, 3]) == Collection.new([1, 2, 3])
