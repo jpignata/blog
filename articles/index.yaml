@@ -19,15 +19,6 @@
     examines the ways we can prepare our codebases for future generations.
 
 - title: |
-    Talk: Kafka: The Great Logfile in the Sky
-  date: 2013-02-15
-  file_name: kafka-talk.md
-  permalink: /2013/02/kafka-the-great-logfile-in-sky.md
-  summary: |
-    Video and slides from a talk given at the Lone Star Ruby Conference about
-    Apache Kafka.
-
-- title: |
     Your Objects, the Unix Way: Applying the Unix Philosophy to Object-Oriented Design
   date: 2012-11-28
   file_name: your-objects-the-unix-way.md
@@ -80,3 +71,13 @@
     The semantics of protected method visibility hardly ever seem applicable.
     Why does this language feature exist and how is it used by open source
     projects?
+
+- title: |
+    Talk: Kafka: The Great Logfile in the Sky
+  date: 2012-08-10
+  file_name: kafka-talk.md
+  permalink: /2012/08/kafka-the-great-logfile-in-sky.md
+  summary: |
+    Video and slides from a talk given at the Lone Star Ruby Conference about
+    Apache Kafka.
+
