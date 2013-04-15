@@ -1,3 +1,12 @@
+- title: Hit The Switches
+  date: 2013-04-14
+  file_name: hit-the-switches.md
+  permalink: /2013/04/hit-the-switches.html
+  summary: |
+    An experimental gem to manage feature switches in a Ruby application using
+    pub/sub systems in Redis and Postgres for coordination to reduce the amount
+    applicatin servers must query a backend.
+
 - title: |
     Talk: A Brief Aside on Request Queueing
   date: 2013-03-12
