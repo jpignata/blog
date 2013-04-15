@@ -17,7 +17,7 @@ being continuously deployed.
 In the intervening years we've gotten more sophisticated in our approach to
 feature flags. We gate not just on the running code's environment but also down
 to request-specific parameters such as the current user. In our Ruby projects,
-using tools like [rollout](https://github.com/jamesgollick/rollout) or
+using tools like [rollout](https://github.com/jamesgolick/rollout) or
 [flipper](https://github.com/jnunemaker/flipper) we can turn a feature on to a
 specific set of users or to some arbitrary percentage of users. Using these
 tactics we can conditionally expose a feature to a small subset of users. This
