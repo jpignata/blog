@@ -1,3 +1,13 @@
+- title: |
+    Talk: Code Smells: Your Refactoring Cheat Codes
+  date: 2013-04-27
+  file_name: code-smells-talk.md
+  permalink: /2013/04/mwrc-code-smells-talk.html
+  summary: |
+    Video and slides from a talk I gave at the Mountainwest Ruby Conference earlier
+    this month that talks about some of the canonical code smells by walking through
+    a refactoring example.
+
 - title: Hit The Switches
   date: 2013-04-14
   file_name: hit-the-switches.md
