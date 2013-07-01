@@ -1,4 +1,13 @@
 - title: |
+    Talk: Asynchronous Service Oriented Design
+  date: 2013-07-01
+  file_name: async-services-talk.md
+  permalink: /2013/07/goruco-service-oriented-design.html
+  summary: |
+    Video and slides from my talk at GORUCO 2013 on some of our service oriented
+    infrastructure at GroupMe.
+
+- title: |
     Talk: Code Smells: Your Refactoring Cheat Codes
   date: 2013-04-27
   file_name: code-smells-talk.md
